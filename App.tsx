@@ -1,7 +1,7 @@
 import { StyleSheet, StatusBar, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import TabNavigator from "./TabNavigator";
+import TabNavigator from "./src/navigation/TabNavigator";
 import { Provider } from "react-redux";
 import store from "src/redux/store";
 import { useEffect, useState } from "react";

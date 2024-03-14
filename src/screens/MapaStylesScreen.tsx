@@ -101,24 +101,6 @@ function Page({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.blockButton}>
-        <TouchableOpacity onPress={() => navigation.navigate("HomeInitial")}>
-          <Text
-            style={{
-              backgroundColor: "#ff6a00ba",
-              color: "#fff",
-              fontSize: 14,
-              padding: 9,
-              textAlign: "center",
-              borderRadius: 8,
-              textTransform: "uppercase",
-              fontWeight: "bold",
-              borderWidth: 1,
-              borderColor: "#ddd",
-            }}
-          >
-            Concluir
-          </Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Text
             style={{
@@ -134,6 +116,24 @@ function Page({ navigation }) {
             }}
           >
             Retornar
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text
+            style={{
+              backgroundColor: "#ff6a00ba",
+              color: "#fff",
+              fontSize: 14,
+              padding: 9,
+              textAlign: "center",
+              borderRadius: 8,
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              borderWidth: 1,
+              borderColor: "#ddd",
+            }}
+          >
+            Concluir
           </Text>
         </TouchableOpacity>
       </View>
