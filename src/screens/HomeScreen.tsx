@@ -52,8 +52,8 @@ const Page = () => {
           initialRegion={{
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitudeDelta: 0.006,
+            longitudeDelta: 0.006,
           }}
           style={styles.map}
           customMapStyle={
@@ -62,8 +62,8 @@ const Page = () => {
         >
           <Marker
             coordinate={{
-              latitude: -22.48484,
-              longitude: -42.48393,
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
             }}
           />
         </MapView>

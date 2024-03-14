@@ -8,7 +8,11 @@ import {
   View,
 } from "react-native";
 
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  AntDesign,
+  MaterialIcons,
+} from "@expo/vector-icons";
 
 function Page({ setModalVisible }) {
   return (
@@ -18,6 +22,9 @@ function Page({ setModalVisible }) {
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
+          paddingBottom: 12,
+          borderBottomWidth: 1,
+          borderColor: "#ccc",
         }}
       >
         <Text style={{ fontSize: 16, fontWeight: "bold", color: "#222" }}>
@@ -76,6 +83,7 @@ function Page({ setModalVisible }) {
           <Text style={{ color: "#eee", fontSize: 14 }}>Atualizar</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btnLocal}>
+          <MaterialIcons name="gps-fixed" size={24} color="#026088dd" />
           <Text style={{ color: "#026088dd", fontSize: 14 }}>Local Atual</Text>
         </TouchableOpacity>
       </View>
@@ -102,6 +110,9 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   btnLocal: {
+    flexDirection: "row",
+    gap: 8,
+    alignItems: "center",
     padding: 8,
     borderRadius: 2,
     backgroundColor: "#fff",
