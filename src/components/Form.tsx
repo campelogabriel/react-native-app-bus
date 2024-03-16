@@ -1,20 +1,29 @@
 import {
-  Button,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   Pressable,
   View,
+  Platform,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
+import { AntDesign, MaterialIcons } from "@expo/vector-icons";
+import { useState } from "react";
 
-import {
-  MaterialCommunityIcons,
-  AntDesign,
-  MaterialIcons,
-} from "@expo/vector-icons";
+const dataExample = [
+  "Gavea",
+  "Ipanema",
+  "Copacabana",
+  "Leblon",
+  "Barra da Tijuca",
+  "Centro",
+  "Estacio",
+];
 
 function Page({ setModalVisible }) {
+  const [bairro, setBairro] = useState("Leblon");
+
   return (
     <View style={styles.container}>
       <View
@@ -41,17 +50,26 @@ function Page({ setModalVisible }) {
       </View>
       <View style={{ gap: 12 }}>
         <Text>Bairro</Text>
-        <TextInput
+        <Picker
+          // mode="dropdown"
+
           style={{
-            borderWidth: 1,
-            borderRadius: 8,
-            borderColor: "#ccc",
-            padding: 9,
             backgroundColor: "#f8fbff",
           }}
-          placeholderTextColor={"#757474"}
-          placeholder="Local"
-        />
+          onValueChange={(item) => setBairro(item)}
+          selectedValue={bairro}
+        >
+          {dataExample.map((bairro, i) => (
+            <Picker.Item
+              style={
+                Platform.OS == "ios" ? styles.inputIOS : styles.inputAndroid
+              }
+              key={i}
+              label={bairro}
+              value={bairro}
+            />
+          ))}
+        </Picker>
         <Text>Endereço</Text>
         <TextInput
           style={{
@@ -123,6 +141,24 @@ const styles = StyleSheet.create({
 
   closeBtn: {
     alignSelf: "flex-end",
+  },
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    color: "black",
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "purple",
+    borderRadius: 8,
+    color: "black",
   },
 });
 

@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Modal,
-  Pressable,
+  // Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,8 +12,8 @@ import { useSelector } from "react-redux";
 import { usePositions } from "src/redux/slicePositions/slicePositions";
 import getStreet from "src/utils/getStreetsName";
 import Form from "../components/Form";
-import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
-import MapView, { Marker } from "react-native-maps";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Modal from "../components/Modal";
 
 const data = ["538", "379", "538", "379", "538", "379", "538", "379"];
 
@@ -33,12 +32,7 @@ const Page = () => {
     <>
       {modalVisible && (
         <View>
-          <Modal
-            transparent={true}
-            animationType="fade"
-            visible={modalVisible}
-            style={styles.modal}
-          >
+          <Modal modalVisible={modalVisible}>
             <View
               style={{
                 flex: 1,
@@ -140,7 +134,11 @@ const Page = () => {
               >
                 Mudar Local
               </Text>
-              <Text style={{ color: "#555" }}>8 veiculos por perto</Text>
+              <View
+                style={{ flexDirection: "row", gap: 8, alignItems: "center" }}
+              >
+                <Text style={{ color: "#555" }}>8 veiculos por perto</Text>
+              </View>
             </View>
           </TouchableOpacity>
         </View>
@@ -224,10 +222,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     marginHorizontal: 20,
-  },
-  modal: {
-    flex: 1,
-    borderWidth: 1,
   },
 });
 

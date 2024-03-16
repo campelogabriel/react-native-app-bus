@@ -1,25 +1,23 @@
-// import { Pressable, StyleSheet, Text, View, Modal } from "react-native";
-// import { AntDesign } from "@expo/vector-icons";
+import { View, Modal, StyleSheet } from "react-native";
+function Page({
+  children,
+  modalVisible,
+}: {
+  children: React.ReactNode;
+  modalVisible: boolean;
+}) {
+  return (
+    <Modal transparent={true} animationType="fade" style={styles.modal}>
+      {children}
+    </Modal>
+  );
+}
 
-// function Modal({ visible: boolean }) {
-//   //   const visible;
+const styles = StyleSheet.create({
+  modal: {
+    flex: 1,
+    borderWidth: 1,
+  },
+});
 
-//   return (
-
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-//   closeBtn: {
-//     position: "absolute",
-//     top: 30,
-//     right: 30,
-//   },
-// });
-
-// export default Modal;
+export default Page;
