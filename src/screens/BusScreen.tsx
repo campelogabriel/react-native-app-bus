@@ -14,6 +14,7 @@ import getStreet from "src/utils/getStreetsName";
 import Form from "../components/Form";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Modal from "../components/Modal";
+import { useLines } from "src/redux/sliceLines/sliceLines";
 
 const data = ["538", "379", "538", "379", "538", "379", "538", "379"];
 
@@ -21,6 +22,7 @@ const Page = () => {
   const [street, setStreet] = useState<string>("");
   const [modalVisible, setModalVisible] = useState(false);
   const position = useSelector(usePositions);
+  const lines = useSelector(useLines);
 
   useEffect(() => {
     getStreet(position).then((data) => {
@@ -78,7 +80,7 @@ const Page = () => {
               marginLeft: 8,
             }}
           >
-            {data.map((line, i) => (
+            {lines.map((line, i) => (
               <TouchableOpacity
                 onPress={(e) => console.log(e.target)}
                 key={i}
@@ -108,22 +110,28 @@ const Page = () => {
                 <Text style={{ alignSelf: "flex-start", color: "#5c5b5b" }}>
                   Localização Escolhida
                 </Text>
-                <Text
-                  style={{
-                    color: "#333",
-                    fontStyle: "italic",
-                    fontWeight: "bold",
-                    fontSize: 12,
-                  }}
-                >
-                  {street || (
-                    <ActivityIndicator size="small" color="#026088dd" />
-                  )}
-                </Text>
+                {street ? (
+                  <Text
+                    style={{
+                      color: "#333",
+                      fontStyle: "italic",
+                      fontWeight: "bold",
+                      fontSize: 12,
+                      alignSelf: "flex-start",
+                    }}
+                  >
+                    {street}
+                  </Text>
+                ) : (
+                  <ActivityIndicator size="small" color="#026088dd" />
+                )}
               </View>
             </View>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
             >
               <Text
                 style={{

@@ -3,35 +3,25 @@ import { Dimensions } from "react-native";
 import {
   SimpleLineIcons,
   MaterialIcons,
-  MaterialCommunityIcons,
   Feather,
+  FontAwesome,
 } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  setDarkMode,
-  setNotificationBusNext,
-} from "src/redux/sliceSettings/sliceSettings";
+import { setNotificationBusNext } from "src/redux/sliceSettings/sliceSettings";
 
-import PickerDistance from "../components/PickerDistance";
 import Modal from "../components/Modal";
+import { useSelector } from "react-redux";
+import RemoveBus from "../components/RemoveBus";
 
 const Page = ({ navigation }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isNotification, setIsNotification] = useState(true);
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
 
-  function setDarkModeStore() {
-    setIsDarkMode((mode) => !mode);
-  }
   function setNotification() {
     setIsNotification((not) => !not);
   }
-
-  useEffect(() => {
-    dispatch(setDarkMode(isDarkMode));
-  }, [isDarkMode]);
 
   useEffect(() => {
     dispatch(setNotificationBusNext(isNotification));
@@ -42,7 +32,7 @@ const Page = ({ navigation }) => {
       {modal && (
         <View>
           <Modal modalVisible={modal}>
-            <PickerDistance setModalVisible={setModal} />
+            <RemoveBus setModalVisible={setModal} />
           </Modal>
         </View>
       )}
@@ -62,26 +52,6 @@ const Page = ({ navigation }) => {
           </View>
         </View>
         <View style={styles.blockSettings}>
-          <TouchableOpacity style={styles.blockBtn}>
-            <View
-              style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
-            >
-              <MaterialIcons
-                style={{
-                  backgroundColor: "#f88be061",
-                  padding: 6,
-                  borderRadius: 12,
-                }}
-                name="dark-mode"
-                size={24}
-                color="#d103a4"
-              />
-              <Text>Dark Mode</Text>
-            </View>
-            <View>
-              <Switch value={isDarkMode} onValueChange={setDarkModeStore} />
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.blockBtn}>
             <View
               style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
@@ -114,13 +84,13 @@ const Page = ({ navigation }) => {
             >
               <MaterialIcons
                 style={{
-                  backgroundColor: "#00ffcc",
+                  backgroundColor: "#fdbef8",
                   padding: 6,
                   borderRadius: 12,
                 }}
                 name="map"
                 size={24}
-                color="#0e997d"
+                color="#ff00ea"
               />
               <Text>Mapa Estilo</Text>
             </View>
@@ -137,17 +107,17 @@ const Page = ({ navigation }) => {
             <View
               style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
             >
-              <MaterialCommunityIcons
+              <FontAwesome
                 style={{
-                  backgroundColor: "#fc9a9a",
+                  backgroundColor: "#52f8d7",
                   padding: 6,
                   borderRadius: 12,
                 }}
-                name="map-marker-distance"
+                name="bus"
                 size={24}
-                color="#ff0000"
+                color="#0e997d"
               />
-              <Text>Distanciamento dos Veiculos</Text>
+              <Text>Remover Ônibus</Text>
             </View>
             <View>
               <Text>

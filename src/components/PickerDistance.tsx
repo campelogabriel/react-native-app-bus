@@ -46,6 +46,7 @@ function Page({ setModalVisible }) {
           </Pressable>
         </View>
         <Picker
+          style={{ backgroundColor: "#eee", color: "#222", elevation: 2 }}
           onValueChange={(item) => setDistance(item)}
           selectedValue={distance}
         >

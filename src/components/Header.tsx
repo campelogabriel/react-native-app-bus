@@ -19,11 +19,12 @@ function Header() {
       {/* <MaterialIcons name="123" size={34} color="#0e997d" /> */}
       <Text style={styles.ex}>123ABC</Text>
       <TextInput
+        // autoComplete=""
         autoCapitalize={"characters"}
         textAlign="center"
         placeholder="Digite a linha..."
+        maxLength={7}
         value={line}
-        maxLength={6}
         onChangeText={(text) => setLine(text)}
         style={{
           color: "#0e997d",

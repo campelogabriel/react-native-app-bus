@@ -15,15 +15,6 @@ import SettingsScreen from "src/screens/SettingsScreen";
 import MapaStylesScreen from "src/screens/MapaStylesScreen";
 
 // import * as Device from "expo-device";
-import * as Notifications from "expo-notifications";
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
 
 const Stack = createStackNavigator();
 
@@ -31,18 +22,18 @@ export default function App() {
   const [fontsLoaded, fontsError] = useFonts({
     AldotheApache: require("./assets/fonts/AldotheApache.ttf"),
   });
-  const [isAllowed, setIsAllowed] = useState(false);
+  const [isPermissionLocation, setIsPermissionLocation] = useState(false);
 
-  const getPermission = async () => {
+  const getPermissionLocation = async () => {
     const { granted } = await requestForegroundPermissionsAsync();
-    if (granted) setIsAllowed(true);
+    if (granted) setIsPermissionLocation(true);
   };
 
   useEffect(() => {
-    getPermission();
+    getPermissionLocation();
   }, []);
 
-  if (!fontsLoaded || !isAllowed)
+  if (!fontsLoaded || !isPermissionLocation)
     return (
       <View style={styles.splash}>
         <LottieView

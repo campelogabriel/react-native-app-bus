@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Text, View, StyleSheet, Platform } from "react-native";
 import MapView, { Marker } from "react-native-maps";
-import MapViewDirections from "react-native-maps-directions";
 import { useSelector } from "react-redux";
 import Header from "src/components/Header";
 import EstiloMapa from "../utils/mapStyle";
@@ -14,9 +13,38 @@ import { addPosition } from "src/redux/slicePositions/slicePositions";
 import { useDispatch } from "react-redux";
 import { useSettings } from "src/redux/sliceSettings/sliceSettings";
 
+import * as Notifications from "expo-notifications";
+
+const bus = [
+  { linha: 538, distancia: 1 },
+  { linha: 539, distancia: 5 },
+  { linha: 539, distancia: 52 },
+];
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+Notifications.scheduleNotificationAsync({
+  content: {
+    title: "Ônibus por perto! 🚍",
+    body: `Linha(s) ${bus
+      .filter((linha) => linha.distancia <= 3)
+      .map((bus) => bus.linha)
+      .join(",")} a menos de 3 km.`,
+  },
+  trigger: null,
+});
+
 const Page = () => {
   const [location, setLocation] = useState<null | LocationObject>(null);
   const settings = useSelector(useSettings);
+  const [permissionNotification, setPermissionNotification] = useState(false);
+
   const dispatch = useDispatch();
 
   async function requestLocationPermissions() {
@@ -27,8 +55,15 @@ const Page = () => {
     );
   }
 
+  const getPermissionNotification = async () => {
+    const { status } = await Notifications.getPermissionsAsync();
+    if (status !== "granted") return;
+    setPermissionNotification(true);
+  };
+
   useEffect(() => {
     requestLocationPermissions();
+    getPermissionNotification();
     // watchPositionAsync(
     //   {
     //     accuracy: LocationAccuracy.Highest,
@@ -56,9 +91,7 @@ const Page = () => {
             longitudeDelta: 0.006,
           }}
           style={styles.map}
-          customMapStyle={
-            settings.darkMode ? EstiloMapa.dark : EstiloMapa[settings.mapStyles]
-          }
+          customMapStyle={EstiloMapa[settings.mapStyles]}
         >
           <Marker
             coordinate={{
