@@ -18,7 +18,7 @@ function Page({ setModalVisible }) {
   const dispatch = useDispatch();
 
   const nextPage = () => {
-    if (page * offset >= lines.length) return;
+    if (page * offset >= lines.length || lines.length <= 4) return;
     setOffset((offset) => offset + 4);
     setPage((page) => page + 1);
   };

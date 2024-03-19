@@ -11,7 +11,6 @@ import { useDispatch } from "react-redux";
 import { setNotificationBusNext } from "src/redux/sliceSettings/sliceSettings";
 
 import Modal from "../components/Modal";
-import { useSelector } from "react-redux";
 import RemoveBus from "../components/RemoveBus";
 
 const Page = ({ navigation }) => {
