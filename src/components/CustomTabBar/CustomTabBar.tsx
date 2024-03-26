@@ -20,8 +20,10 @@ function activeColor(nameIcon: string): string {
 }
 
 const Page = ({ state, descriptors, navigation }: any) => {
+  const displayTabInHome =
+    descriptors[Object.keys(descriptors)[1]].options.tabBarStyle.display;
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, display: displayTabInHome }}>
       <View style={styles.content}>
         {state.routes.map((route, index) => {
           const { options } = descriptors[route.key];

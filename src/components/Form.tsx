@@ -10,6 +10,7 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
+// import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const dataExample = [
   "Gavea",
@@ -21,7 +22,7 @@ const dataExample = [
   "Estacio",
 ];
 
-function Page({ setModalVisible }) {
+function Page({ setModalVisible }: any) {
   const [bairro, setBairro] = useState("Leblon");
 
   return (
