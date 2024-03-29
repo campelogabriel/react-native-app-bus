@@ -7,7 +7,6 @@ const slicePositions = createSlice({
   initialState: initialStates,
   reducers: {
     addPosition(state, { payload }: PayloadAction<number[]>) {
-      console.log("redux", payload);
       return payload;
     },
   },

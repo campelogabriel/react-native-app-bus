@@ -30,14 +30,18 @@ function Page({ setTabStyle, setModal }) {
           <MaterialIcons name="directions-bus" size={20} color="#000" />
           <Text style={{ color: "#000" }}>Linha 538</Text>
         </View>
-        <View style={{ flexDirection: "row", gap: 10 }}>
-          <MaterialCommunityIcons
-            name="map-marker-distance"
-            size={24}
-            color="#420"
-          />
-          <Text>Distancia de 620 metros...</Text>
+        <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+          <MaterialCommunityIcons name="highway" size={20} color="black" />
+          <Text>Trajeto: Rocinha - Leme</Text>
         </View>
+      </View>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+        <MaterialCommunityIcons
+          name="map-marker-distance"
+          size={24}
+          color="#420"
+        />
+        <Text>Distancia de 620 metros...</Text>
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
         <MaterialIcons name="speed" size={24} color="black" />
@@ -82,6 +86,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 20,
     alignItems: "center",
+    // borderBottomWidth: 1,
+    // borderColor: "#eee",
+    // paddingBottom: 8,
   },
   tag: {
     backgroundColor: "#FCC417",

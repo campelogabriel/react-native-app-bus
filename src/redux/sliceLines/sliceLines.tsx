@@ -1,17 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialStates: string[] | null = [
-  "539",
-  "538",
-  "309",
-  "112",
-  "aaa",
-  "bbb",
-  "ccc",
-  "ddd",
-  "eee",
-  "fff",
-];
+const initialStates: string[] | null = ["539", "538", "309", "112"];
 
 const sliceLines = createSlice({
   name: "lines",

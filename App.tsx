@@ -7,33 +7,40 @@ import store from "src/redux/store";
 import { useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import LottieView from "lottie-react-native";
-import { requestForegroundPermissionsAsync } from "expo-location";
+import {
+  LocationObject,
+  getCurrentPositionAsync,
+  requestForegroundPermissionsAsync,
+} from "expo-location";
 import { createStackNavigator } from "@react-navigation/stack";
 import BusScreen from "./src/screens/BusScreen";
-import TestScreen from "src/screens/TestScreen";
 import SettingsScreen from "src/screens/SettingsScreen";
 import MapaStylesScreen from "src/screens/MapaStylesScreen";
-
-// import * as Device from "expo-device";
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [fontsLoaded, fontsError] = useFonts({
-    AldotheApache: require("./assets/fonts/AldotheApache.ttf"),
-  });
   const [isPermissionLocation, setIsPermissionLocation] = useState(false);
+  const [location, setLocation] = useState<LocationObject>();
+
+  async function requestLocationPermissions() {
+    const positions = await getCurrentPositionAsync();
+    setLocation(positions);
+  }
 
   const getPermissionLocation = async () => {
     const { granted } = await requestForegroundPermissionsAsync();
-    if (granted) setIsPermissionLocation(true);
+    if (granted) {
+      setIsPermissionLocation(true);
+      requestLocationPermissions();
+    }
   };
 
   useEffect(() => {
     getPermissionLocation();
   }, []);
 
-  if (!fontsLoaded || !isPermissionLocation)
+  if (!isPermissionLocation || !location)
     return (
       <View style={styles.splash}>
         <LottieView
@@ -45,6 +52,7 @@ export default function App() {
         />
       </View>
     );
+  7;
 
   return (
     <NavigationContainer>
@@ -54,9 +62,12 @@ export default function App() {
             screenOptions={{ headerShown: false }}
             initialRouteName="HomeInitial"
           >
-            <Stack.Screen name="HomeInitial" component={TabNavigator} />
+            <Stack.Screen
+              name="HomeInitial"
+              initialParams={{ location: location }}
+              component={TabNavigator}
+            />
             <Stack.Screen name="BusInitial" component={BusScreen} />
-            <Stack.Screen name="TestInitial" component={TestScreen} />
             <Stack.Screen name="MapaStyle" component={MapaStylesScreen} />
             <Stack.Screen
               name="Settings-outlineInitial"

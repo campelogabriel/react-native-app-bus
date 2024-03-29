@@ -1,6 +1,5 @@
 import { Animated, Button, StyleSheet, Text, View } from "react-native";
 import MapView, {
-  AnimatedRegion,
   Callout,
   Marker,
   PROVIDER_GOOGLE,
@@ -13,7 +12,11 @@ import ModalBus from "./ModalBus";
 
 // @ts-ignore
 import carIcon from "../../assets/00016.png";
-import { getRotation } from "src/utils/getRotationBus";
+import { useSelector } from "react-redux";
+import { useBuses } from "src/redux/sliceBuses/sliceBuses";
+import { useSettings } from "src/redux/sliceSettings/sliceSettings";
+import getBusByLine from "src/utils/getBusLByLine";
+import { useLines } from "src/redux/sliceLines/sliceLines";
 
 const MarkerAnimated = Animated.createAnimatedComponent(Marker);
 
@@ -27,8 +30,13 @@ const finalPositions: Position = {
   longitude: -43.233132329425715,
 };
 
-function Page({ location, settings, setTabStyle }) {
+function Page({ location, setTabStyle }) {
   const [modal, setModal] = useState(false);
+  const settings = useSelector(useSettings);
+
+  //PEGAR ONIBUS NO REDUX
+  const buses = useSelector(useBuses);
+  const busLines = useSelector(useLines);
 
   //@ts-ignore
   const marker = useRef<MarkerAnimated | null>();
@@ -36,40 +44,44 @@ function Page({ location, settings, setTabStyle }) {
   const [curRot, setCurRot] = useState(0);
   const [coordinates, setCoordinates] = useState(positions);
 
-  const animate = (final: Position) => {
-    if (
-      coordinates.latitude == final.latitude &&
-      coordinates.longitude == final.longitude
-    )
-      return;
-    console.log("old root", curRot);
-
-    const newRoot = getRotation(
-      { latitude: coordinates.latitude, longitude: coordinates.longitude },
-      final
-    );
-    console.log("new root", newRoot);
-    setCurRot(newRoot);
-    setCoordinates(final);
-
-    marker.current.animateMarkerToCoordinate(final, 500);
-  };
-
   useEffect(() => {
-    setTimeout(() => {
-      animate(finalPositions);
-    }, 6000);
+    getBusByLine(busLines, location)
+      .then((veiculos) => console.log("v", veiculos))
+      .catch((err) => console.log("err: ", err));
   }, []);
+
+  // const animate = (final: Position) => {
+  //   if (
+  //     coordinates.latitude == final.latitude &&
+  //     coordinates.longitude == final.longitude
+  //   )
+  //     return;
+
+  //   const newRoot = getRotation(
+  //     { latitude: coordinates.latitude, longitude: coordinates.longitude },
+  //     final
+  //   );
+  //   setCurRot(newRoot);
+  //   setCoordinates(final);
+
+  //   marker.current.animateMarkerToCoordinate(final, 500);
+  // };
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     animate(finalPositions);
+  //   }, 6000);
+  // }, []);
 
   return (
     <>
       <MapView
         provider={PROVIDER_GOOGLE}
+        // key={process.env.EXPO_PUBLIC_KEY_GOOGLE_MAPS}
+        toolbarEnabled
         initialRegion={{
-          // latitude: location.coords.latitude,
-          // longitude: location.coords.longitude,
-          latitude: coordinates.latitude,
-          longitude: coordinates.longitude,
+          latitude: location.at(0),
+          longitude: location.at(1),
           latitudeDelta: 0.006,
           longitudeDelta: 0.006,
         }}
@@ -78,10 +90,10 @@ function Page({ location, settings, setTabStyle }) {
       >
         <Marker
           coordinate={{
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
+            latitude: location.at(0),
+            longitude: location.at(1),
           }}
-        />
+        ></Marker>
 
         <MarkerAnimated
           ref={(el) => (marker.current = el)}
@@ -95,7 +107,27 @@ function Page({ location, settings, setTabStyle }) {
             setModal(true);
             setTabStyle(false);
           }}
-        />
+        >
+          <Callout style={{ position: "absolute", top: 0, left: 10 }} tooltip>
+            <View
+              style={{
+                backgroundColor: "#FCC417",
+                padding: 8,
+                borderRadius: 12,
+                elevation: 3,
+                borderWidth: 1,
+                borderColor: "#ccc",
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+              }}
+            >
+              <Text style={{ color: "#000" }}>Linha 538</Text>
+            </View>
+          </Callout>
+        </MarkerAnimated>
       </MapView>
       {modal && <ModalBus setModal={setModal} setTabStyle={setTabStyle} />}
     </>
@@ -106,6 +138,7 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
+    position: "relative",
   },
 });
 

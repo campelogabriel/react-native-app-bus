@@ -4,12 +4,13 @@ import HomeScreen from "../screens/HomeScreen";
 import BusScreen from "../screens/BusScreen";
 import CustomTabBar from "../components/CustomTabBar/CustomTabBar";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addPosition } from "src/redux/slicePositions/slicePositions";
 
 const Tab = createBottomTabNavigator();
 
-const Routes = () => {
+const TabNavigator = ({ route }) => {
   const [isFlex, setIsFlex] = useState(true);
-
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -25,15 +26,37 @@ const Routes = () => {
       }}
       tabBar={(props) => <CustomTabBar {...props} />}
     >
-      <Tab.Screen name="Bus" component={BusScreen} />
+      <Tab.Screen
+        name="Bus"
+        children={() => (
+          <BusScreen
+            data={{
+              location: [
+                route.params.location.coords.latitude,
+                route.params.location.coords.longitude,
+              ],
+            }}
+          />
+        )}
+      />
       <Tab.Screen
         name="Home"
-        children={() => <HomeScreen data={{ isFlex, setIsFlex }} />}
-        // component={HomeScreen}
+        children={() => (
+          <HomeScreen
+            data={{
+              isFlex,
+              setIsFlex,
+              location: [
+                route.params.location.coords.latitude,
+                route.params.location.coords.longitude,
+              ],
+            }}
+          />
+        )}
       />
       <Tab.Screen name="Settings-outline" component={SettingsScreen} />
     </Tab.Navigator>
   );
 };
 
-export default Routes;
+export default TabNavigator;

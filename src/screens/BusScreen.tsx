@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  // Modal,
   ScrollView,
   StyleSheet,
   Text,
@@ -9,23 +8,19 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
-import { usePositions } from "src/redux/slicePositions/slicePositions";
 import getStreet from "src/utils/getStreetsName";
 import Form from "../components/Form";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Modal from "../components/Modal";
 import { useLines } from "src/redux/sliceLines/sliceLines";
 
-const data = ["538", "379", "538", "379", "538", "379", "538", "379"];
-
-const Page = () => {
+const Page = ({ data }) => {
   const [street, setStreet] = useState<string>("");
   const [modalVisible, setModalVisible] = useState(false);
-  const position = useSelector(usePositions);
   const lines = useSelector(useLines);
 
   useEffect(() => {
-    getStreet(position).then((data) => {
+    getStreet(data.location).then((data) => {
       setStreet(data.results[0].formatted_address);
     });
   }, []);
