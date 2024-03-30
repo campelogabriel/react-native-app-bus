@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Bus } from "src/types/BusType";
 
-const initialStates: Bus[] | any | null = [{}];
+const initialStates: Bus[] | any | null = [];
 
 const sliceBuses = createSlice({
   name: "buses",

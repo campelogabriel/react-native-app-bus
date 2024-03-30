@@ -6,7 +6,20 @@ import {
 } from "@expo/vector-icons";
 import { useState } from "react";
 
-function Page({ setTabStyle, setModal }) {
+function Page({ setTabStyle, setModal, modalInfoBus }) {
+  // const now = Date.now();
+  const now = 1711823966000;
+  let diff = Math.round((now - modalInfoBus.datahora) / (1000 * 60));
+
+  let time;
+  if (diff > 1) {
+    time = `${diff} minutos`;
+  } else if (diff == 1) {
+    time = `${diff} minuto`;
+  } else {
+    time = `Menos de 1 minuto atrás`;
+  }
+
   function handleModalBus() {
     setTabStyle(true);
     setModal(false);
@@ -15,7 +28,9 @@ function Page({ setTabStyle, setModal }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={{ textTransform: "uppercase" }}>Numeração: AF20102</Text>
+        <Text style={{ textTransform: "uppercase" }}>
+          Numeração: {modalInfoBus.ordem}
+        </Text>
         <Pressable onPress={handleModalBus}>
           <AntDesign
             style={styles.closeBtn}
@@ -26,13 +41,24 @@ function Page({ setTabStyle, setModal }) {
         </Pressable>
       </View>
       <View style={styles.tagInfo}>
-        <View style={styles.tag}>
-          <MaterialIcons name="directions-bus" size={20} color="#000" />
-          <Text style={{ color: "#000" }}>Linha 538</Text>
+        <View
+          style={{
+            ...styles.tag,
+            backgroundColor: `#${modalInfoBus.backgroundColor}`,
+          }}
+        >
+          <MaterialIcons
+            name="directions-bus"
+            size={20}
+            color={`#${modalInfoBus.textColor}`}
+          />
+          <Text style={{ color: `#${modalInfoBus.textColor}` }}>
+            Linha {modalInfoBus.linha}
+          </Text>
         </View>
         <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
           <MaterialCommunityIcons name="highway" size={20} color="black" />
-          <Text>Trajeto: Rocinha - Leme</Text>
+          <Text>Trajeto: {modalInfoBus.trajeto}</Text>
         </View>
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
@@ -41,15 +67,20 @@ function Page({ setTabStyle, setModal }) {
           size={24}
           color="#420"
         />
-        <Text>Distancia de 620 metros...</Text>
+        <Text>Distancia de {modalInfoBus.distanciaKm} metros...</Text>
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
         <MaterialIcons name="speed" size={24} color="black" />
-        <Text>Velocidade do Veículo Registrada: 20 Km/h</Text>
+        <Text>
+          Velocidade do Veículo Registrada:
+          {modalInfoBus.velocidade == 0
+            ? " Parado"
+            : ` ${modalInfoBus.velocidade} Km/h`}
+        </Text>
       </View>
       <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
         <AntDesign name="clockcircleo" size={20} color="black" />
-        <Text>Última Atualização: 32 segundos atrás...</Text>
+        <Text>Última Atualização: {time} atrás...</Text>
       </View>
     </View>
   );
@@ -86,12 +117,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 20,
     alignItems: "center",
-    // borderBottomWidth: 1,
-    // borderColor: "#eee",
-    // paddingBottom: 8,
   },
   tag: {
-    backgroundColor: "#FCC417",
     flexDirection: "row",
     paddingHorizontal: 12,
     gap: 12,

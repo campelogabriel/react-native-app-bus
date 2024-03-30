@@ -1,78 +1,111 @@
-import { Animated, Button, StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import MapView, {
-  Callout,
   Marker,
   PROVIDER_GOOGLE,
   // MarkerAnimated,
 } from "react-native-maps";
 import EstiloMapa from "../utils/mapStyle";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Position } from "src/types/PositionType";
 import ModalBus from "./ModalBus";
 
+import MarkerCustom from "./MarkerCustom";
+
 // @ts-ignore
-import carIcon from "../../assets/00016.png";
 import { useSelector } from "react-redux";
 import { useBuses } from "src/redux/sliceBuses/sliceBuses";
 import { useSettings } from "src/redux/sliceSettings/sliceSettings";
-import getBusByLine from "src/utils/getBusLByLine";
-import { useLines } from "src/redux/sliceLines/sliceLines";
+import { Bus } from "src/types/BusType";
 
-const MarkerAnimated = Animated.createAnimatedComponent(Marker);
-
-const positions: Position = {
+const finalPositions: Position = {
   latitude: -22.976767031650564,
   longitude: -43.22994050073355,
 };
 
-const finalPositions: Position = {
+const positions: Position = {
   latitude: -22.97788320087905,
   longitude: -43.233132329425715,
 };
 
 function Page({ location, setTabStyle }) {
+  const [modalOrdem, setModalOrdem] = useState("");
+  const [modalInfoBus, setModalInfoBus] = useState<Bus>();
   const [modal, setModal] = useState(false);
   const settings = useSelector(useSettings);
-
-  //PEGAR ONIBUS NO REDUX
-  const buses = useSelector(useBuses);
-  const busLines = useSelector(useLines);
-
-  //@ts-ignore
-  const marker = useRef<MarkerAnimated | null>();
-
-  const [curRot, setCurRot] = useState(0);
-  const [coordinates, setCoordinates] = useState(positions);
-
-  useEffect(() => {
-    getBusByLine(busLines, location)
-      .then((veiculos) => console.log("v", veiculos))
-      .catch((err) => console.log("err: ", err));
-  }, []);
-
-  // const animate = (final: Position) => {
-  //   if (
-  //     coordinates.latitude == final.latitude &&
-  //     coordinates.longitude == final.longitude
-  //   )
-  //     return;
-
-  //   const newRoot = getRotation(
-  //     { latitude: coordinates.latitude, longitude: coordinates.longitude },
-  //     final
-  //   );
-  //   setCurRot(newRoot);
-  //   setCoordinates(final);
-
-  //   marker.current.animateMarkerToCoordinate(final, 500);
-  // };
+  const [testCoords, setTestCoords] = useState<Position>(positions);
 
   // useEffect(() => {
   //   setTimeout(() => {
-  //     animate(finalPositions);
-  //   }, 6000);
+  //     // console.log("updated on Parent");
+  //     setTestCoords(finalPositions);
+  //   }, 2000);
   // }, []);
 
+  //PEGAR ONIBUS NO REDUX
+  // const buses = useSelector(useBuses);
+  // console.log("buses to mapCustom", buses);
+  const buses = [
+    {
+      ordem: "A41082",
+      linha: "112",
+      latitude: "-22,91056",
+      longitude: "-43,18832",
+      distanciaKm: "NaN",
+      velocidade: "9",
+      datahora: "1711823965000",
+      backgroundColor: "FCC417",
+      textColor: "000000",
+      trajeto: "Rodoviária - Alto Gávea",
+    },
+    {
+      ordem: "A41083",
+      linha: "112",
+      latitude: "-22,96081",
+      longitude: "-43,2075",
+      distanciaKm: "NaN",
+      velocidade: "29",
+      datahora: "1711823965000",
+      backgroundColor: "FCC417",
+      textColor: "000000",
+      trajeto: "Rodoviária - Alto Gávea",
+    },
+    {
+      ordem: "C41411",
+      linha: "112",
+      latitude: "-22,89955",
+      longitude: "-43,21157",
+      distanciaKm: "NaN",
+      velocidade: "0",
+      datahora: "1711823965000",
+      backgroundColor: "FCC417",
+      textColor: "000000",
+      trajeto: "Rodoviária - Alto Gávea",
+    },
+    {
+      ordem: "A41059",
+      linha: "112",
+      latitude: "-22,97613",
+      longitude: "-43,22803",
+      distanciaKm: "NaN",
+      velocidade: "0",
+      datahora: "1711823965000",
+      backgroundColor: "FCC417",
+      textColor: "000000",
+      trajeto: "Rodoviária - Alto Gávea",
+    },
+    {
+      ordem: "A41060",
+      linha: "112",
+      latitude: "-22,89954",
+      longitude: "-43,212",
+      distanciaKm: "NaN",
+      velocidade: "0",
+      datahora: "1711823965000",
+      backgroundColor: "FCC417",
+      textColor: "000000",
+      trajeto: "Rodoviária - Alto Gávea",
+    },
+  ];
   return (
     <>
       <MapView
@@ -88,6 +121,7 @@ function Page({ location, setTabStyle }) {
         style={styles.map}
         customMapStyle={EstiloMapa[settings.mapStyles]}
       >
+        {/* User Position */}
         <Marker
           coordinate={{
             latitude: location.at(0),
@@ -95,41 +129,35 @@ function Page({ location, setTabStyle }) {
           }}
         ></Marker>
 
-        <MarkerAnimated
-          ref={(el) => (marker.current = el)}
-          anchor={{ x: 0.5, y: 0.5 }}
-          coordinate={coordinates}
-          rotation={curRot}
-          image={carIcon}
-          flat={true}
-          tracksViewChanges={true}
-          onPress={() => {
-            setModal(true);
-            setTabStyle(false);
-          }}
-        >
-          <Callout style={{ position: "absolute", top: 0, left: 10 }} tooltip>
-            <View
-              style={{
-                backgroundColor: "#FCC417",
-                padding: 8,
-                borderRadius: 12,
-                elevation: 3,
-                borderWidth: 1,
-                borderColor: "#ccc",
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-              }}
-            >
-              <Text style={{ color: "#000" }}>Linha 538</Text>
-            </View>
-          </Callout>
-        </MarkerAnimated>
+        {buses.map((bus) => {
+          const latitude = Number(bus.latitude.replace(",", "."));
+          const longitude = Number(bus.longitude.replace(",", "."));
+
+          console.log("latt", latitude);
+          return (
+            <MarkerCustom
+              key={bus.ordem}
+              bus={bus}
+              coords={{ latitude, longitude }}
+              setModal={setModal}
+              setTabStyle={setTabStyle}
+              setModalInfoBus={setModalInfoBus}
+            />
+          );
+        })}
+        {/* <MarkerCustom
+          coords={testCoords}
+          setModal={setModal}
+          setTabStyle={setTabStyle}
+        /> */}
       </MapView>
-      {modal && <ModalBus setModal={setModal} setTabStyle={setTabStyle} />}
+      {modal && (
+        <ModalBus
+          modalInfoBus={modalInfoBus}
+          setModal={setModal}
+          setTabStyle={setTabStyle}
+        />
+      )}
     </>
   );
 }
@@ -138,7 +166,6 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
-    position: "relative",
   },
 });
 
