@@ -1,5 +1,6 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import MapView, {
+  Callout,
   Marker,
   PROVIDER_GOOGLE,
   // MarkerAnimated,
@@ -111,7 +112,6 @@ function Page({ location, setTabStyle }) {
       <MapView
         provider={PROVIDER_GOOGLE}
         // key={process.env.EXPO_PUBLIC_KEY_GOOGLE_MAPS}
-        toolbarEnabled
         initialRegion={{
           latitude: location.at(0),
           longitude: location.at(1),
@@ -127,7 +127,21 @@ function Page({ location, setTabStyle }) {
             latitude: location.at(0),
             longitude: location.at(1),
           }}
-        ></Marker>
+        >
+          <Callout tooltip>
+            <View
+              style={{
+                marginVertical: 12,
+                backgroundColor: "#0e997d",
+                paddingVertical: 4,
+                paddingHorizontal: 8,
+                borderRadius: 12,
+              }}
+            >
+              <Text style={{ color: "#eee" }}>Você</Text>
+            </View>
+          </Callout>
+        </Marker>
 
         {buses.map((bus) => {
           const latitude = Number(bus.latitude.replace(",", "."));

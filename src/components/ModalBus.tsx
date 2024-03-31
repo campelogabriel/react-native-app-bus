@@ -52,11 +52,13 @@ function Page({ setTabStyle, setModal, modalInfoBus }) {
             size={20}
             color={`#${modalInfoBus.textColor}`}
           />
-          <Text style={{ color: `#${modalInfoBus.textColor}` }}>
+          <Text
+            style={{ color: `#${modalInfoBus.textColor}`, fontWeight: "bold" }}
+          >
             Linha {modalInfoBus.linha}
           </Text>
         </View>
-        <View style={{ flexDirection: "row", gap: 12, alignItems: "center" }}>
+        <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
           <MaterialCommunityIcons name="highway" size={20} color="black" />
           <Text>Trajeto: {modalInfoBus.trajeto}</Text>
         </View>
@@ -121,7 +123,7 @@ const styles = StyleSheet.create({
   tag: {
     flexDirection: "row",
     paddingHorizontal: 12,
-    gap: 12,
+    gap: 8,
     paddingVertical: 4,
     borderRadius: 12,
   },
