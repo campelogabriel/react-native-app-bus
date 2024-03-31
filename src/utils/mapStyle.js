@@ -1,8 +1,8 @@
 export default stylesMaps = {
   padrao: [
     {
-      featureType: "administrative",
-      elementType: "geometry",
+      featureType: "poi",
+      elementType: "labels.text",
       stylers: [
         {
           visibility: "off",
@@ -10,7 +10,7 @@ export default stylesMaps = {
       ],
     },
     {
-      featureType: "poi",
+      featureType: "poi.business",
       stylers: [
         {
           visibility: "off",
@@ -71,10 +71,27 @@ export default stylesMaps = {
     },
     {
       featureType: "poi",
+      elementType: "labels.text",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi",
       elementType: "labels.text.fill",
       stylers: [
         {
           color: "#d59563",
+        },
+      ],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -116,6 +133,15 @@ export default stylesMaps = {
     },
     {
       featureType: "road",
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "road",
       elementType: "labels.text.fill",
       stylers: [
         {
@@ -147,6 +173,14 @@ export default stylesMaps = {
       stylers: [
         {
           color: "#f3d19c",
+        },
+      ],
+    },
+    {
+      featureType: "transit",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -268,10 +302,27 @@ export default stylesMaps = {
     },
     {
       featureType: "poi",
+      elementType: "labels.text",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi",
       elementType: "labels.text.fill",
       stylers: [
         {
           color: "#93817c",
+        },
+      ],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -299,6 +350,15 @@ export default stylesMaps = {
       stylers: [
         {
           color: "#f5f1e6",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -353,6 +413,14 @@ export default stylesMaps = {
       stylers: [
         {
           color: "#806b63",
+        },
+      ],
+    },
+    {
+      featureType: "transit",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -481,10 +549,27 @@ export default stylesMaps = {
     },
     {
       featureType: "poi",
+      elementType: "labels.text",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi",
       elementType: "labels.text.fill",
       stylers: [
         {
           color: "#757575",
+        },
+      ],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -521,6 +606,15 @@ export default stylesMaps = {
       stylers: [
         {
           color: "#2c2c2c",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -566,6 +660,14 @@ export default stylesMaps = {
       stylers: [
         {
           color: "#616161",
+        },
+      ],
+    },
+    {
+      featureType: "transit",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -650,10 +752,27 @@ export default stylesMaps = {
     },
     {
       featureType: "poi",
+      elementType: "labels.text",
+      stylers: [
+        {
+          visibility: "off",
+        },
+      ],
+    },
+    {
+      featureType: "poi",
       elementType: "labels.text.fill",
       stylers: [
         {
           color: "#757575",
+        },
+      ],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -681,6 +800,15 @@ export default stylesMaps = {
       stylers: [
         {
           color: "#ffffff",
+        },
+      ],
+    },
+    {
+      featureType: "road",
+      elementType: "labels.icon",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
@@ -717,6 +845,14 @@ export default stylesMaps = {
       stylers: [
         {
           color: "#9e9e9e",
+        },
+      ],
+    },
+    {
+      featureType: "transit",
+      stylers: [
+        {
+          visibility: "off",
         },
       ],
     },
