@@ -17,7 +17,7 @@ function Page({ setTabStyle, setModal, modalInfoBus }) {
   } else if (diff == 1) {
     time = `${diff} minuto`;
   } else {
-    time = `Menos de 1 minuto atrás`;
+    time = `Menos de 1 minuto`;
   }
 
   function handleModalBus() {
@@ -45,6 +45,7 @@ function Page({ setTabStyle, setModal, modalInfoBus }) {
           style={{
             ...styles.tag,
             backgroundColor: `#${modalInfoBus.backgroundColor}`,
+            flex: 1,
           }}
         >
           <MaterialIcons
@@ -58,7 +59,14 @@ function Page({ setTabStyle, setModal, modalInfoBus }) {
             Linha {modalInfoBus.linha}
           </Text>
         </View>
-        <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 4,
+            alignItems: "center",
+            flex: 3,
+          }}
+        >
           <MaterialCommunityIcons name="highway" size={20} color="black" />
           <Text>Trajeto: {modalInfoBus.trajeto}</Text>
         </View>
@@ -116,14 +124,15 @@ const styles = StyleSheet.create({
 
   tagInfo: {
     flexDirection: "row",
+    gap: 15,
     justifyContent: "space-between",
-    gap: 20,
     alignItems: "center",
   },
   tag: {
     flexDirection: "row",
     paddingHorizontal: 12,
-    gap: 8,
+    gap: 4,
+    justifyContent: "center",
     paddingVertical: 4,
     borderRadius: 12,
   },
