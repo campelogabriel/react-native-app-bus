@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { View, Animated } from "react-native";
-import { Marker } from "react-native-maps";
+import { View, Animated, Text } from "react-native";
+import { Callout, Marker } from "react-native-maps";
 
 // @ts-ignore
 import carIcon from "../../assets/00016.png";
@@ -62,23 +62,40 @@ function MarkerCustom({ coords, setModal, setTabStyle, bus, setModalInfoBus }) {
   };
 
   return (
-    <MarkerAnimated
-      ref={(el) => (marker.current = el)}
-      anchor={{ x: 0.5, y: 0.5 }}
-      rotation={rootBus}
-      coordinate={{
-        latitude: newCoordsBus.latitude,
-        longitude: newCoordsBus.longitude,
-      }}
-      image={carIcon}
-      flat={true}
-      onPress={() => {
-        setModal(true);
-        setTabStyle(false);
-        setModalInfoBus(bus);
-      }}
-    />
+    <>
+      <MarkerAnimated
+        ref={(el) => (marker.current = el)}
+        anchor={{ x: 0.5, y: 0.5 }}
+        rotation={rootBus}
+        coordinate={{
+          latitude: newCoordsBus.latitude,
+          longitude: newCoordsBus.longitude,
+        }}
+        image={carIcon}
+        flat={true}
+        onPress={() => {
+          setModal(true);
+          setTabStyle(false);
+          setModalInfoBus(bus);
+        }}
+      />
+    </>
   );
 }
+
+//  <View
+//    style={{
+//      marginBottom: 10,
+//      marginVertical: 12,
+//      backgroundColor: `#${bus.backgroundColor}`,
+//      paddingVertical: 4,
+//      paddingHorizontal: 8,
+//      borderRadius: 12,
+//    }}
+//  >
+//    <Text style={{ color: `#${bus.textColor}`, fontWeight: "bold" }}>
+//      {bus.linha}
+//    </Text>
+//  </View>;
 
 export default MarkerCustom;

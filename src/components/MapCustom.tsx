@@ -6,34 +6,28 @@ import MapView, {
   // MarkerAnimated,
 } from "react-native-maps";
 import EstiloMapa from "../utils/mapStyle";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Position } from "src/types/PositionType";
 import ModalBus from "./ModalBus";
 
 import MarkerCustom from "./MarkerCustom";
 
-// @ts-ignore
+//@ts-ignore
+import userIcon from "../../assets/icon-user.png";
+
 import { useSelector } from "react-redux";
 import { useBuses } from "src/redux/sliceBuses/sliceBuses";
 import { useSettings } from "src/redux/sliceSettings/sliceSettings";
 import { Bus } from "src/types/BusType";
-
-const finalPositions: Position = {
-  latitude: -22.976767031650564,
-  longitude: -43.22994050073355,
-};
-
-const positions: Position = {
-  latitude: -22.97788320087905,
-  longitude: -43.233132329425715,
-};
 
 function Page({ location, setTabStyle }) {
   const [modalOrdem, setModalOrdem] = useState("");
   const [modalInfoBus, setModalInfoBus] = useState<Bus>();
   const [modal, setModal] = useState(false);
   const settings = useSelector(useSettings);
-  const [testCoords, setTestCoords] = useState<Position>(positions);
+
+  //@ts-ignore
+  const markerUser = useRef<Marker>();
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -110,6 +104,7 @@ function Page({ location, setTabStyle }) {
   return (
     <>
       <MapView
+        onMapLoaded={() => markerUser.current.showCallout()}
         provider={PROVIDER_GOOGLE}
         // key={process.env.EXPO_PUBLIC_KEY_GOOGLE_MAPS}
         initialRegion={{
@@ -123,6 +118,9 @@ function Page({ location, setTabStyle }) {
       >
         {/* User Position */}
         <Marker
+          ref={(el) => (markerUser.current = el)}
+          anchor={{ x: 0.5, y: 0.5 }}
+          image={userIcon}
           coordinate={{
             latitude: location.at(0),
             longitude: location.at(1),
@@ -131,6 +129,7 @@ function Page({ location, setTabStyle }) {
           <Callout tooltip>
             <View
               style={{
+                marginBottom: 10,
                 marginVertical: 12,
                 backgroundColor: "#0e997d",
                 paddingVertical: 4,
@@ -159,11 +158,6 @@ function Page({ location, setTabStyle }) {
             />
           );
         })}
-        {/* <MarkerCustom
-          coords={testCoords}
-          setModal={setModal}
-          setTabStyle={setTabStyle}
-        /> */}
       </MapView>
       {modal && (
         <ModalBus
