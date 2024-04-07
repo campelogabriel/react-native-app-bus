@@ -1,30 +1,152 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  Pressable,
   View,
+  Switch,
 } from "react-native";
 import { useSelector } from "react-redux";
 import getStreet from "src/utils/getStreetsName";
-import Form from "../components/Form";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, AntDesign } from "@expo/vector-icons";
 import Modal from "../components/Modal";
 import { useLines } from "src/redux/sliceLines/sliceLines";
+import MapChoose from "../components/MapChoose";
+import ScrollOnibus from "src/components/ScrollOnibus";
+import { useBuses } from "src/redux/sliceBuses/sliceBuses";
+import { Bus } from "src/types/BusType";
 
 const Page = ({ data }) => {
   const [street, setStreet] = useState<string>("");
   const [modalVisible, setModalVisible] = useState(false);
   const lines = useSelector(useLines);
 
+  console.log("BusScreen rendered");
+
+  //PEGAR ONIBUS NO REDUX
+  const buses = [...useSelector(useBuses)].sort(
+    (a, b) => b.distanciaKm - a.distanciaKm
+  );
+
+  // const buses = [
+  //   {
+  //     ordem: "A48054",
+  //     linha: "539",
+  //     latitude: "-22,99864",
+  //     longitude: "-43,2576",
+  //     distanciaKm: "1.70",
+  //     velocidade: "50",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48078",
+  //     linha: "539",
+  //     latitude: "-22,98435",
+  //     longitude: "-43,24434",
+  //     distanciaKm: "0.63",
+  //     velocidade: "29",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48078",
+  //     linha: "539",
+  //     latitude: "-22,98434",
+  //     longitude: "-43,24465",
+  //     distanciaKm: "0.64",
+  //     velocidade: "31",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48054",
+  //     linha: "539",
+  //     latitude: "-22,9984",
+  //     longitude: "-43,25637",
+  //     distanciaKm: "1.58",
+  //     velocidade: "27",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48078",
+  //     linha: "539",
+  //     latitude: "-22,98439",
+  //     longitude: "-43,24525",
+  //     distanciaKm: "0.64",
+  //     velocidade: "12",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48009",
+  //     linha: "539",
+  //     latitude: "-22,9397",
+  //     longitude: "-43,20243",
+  //     distanciaKm: "7.03",
+  //     velocidade: "48",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48009",
+  //     linha: "539",
+  //     latitude: "-22,93918",
+  //     longitude: "-43,20263",
+  //     distanciaKm: "7.06",
+  //     velocidade: "57",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48018",
+  //     linha: "539",
+  //     latitude: "-22,95807",
+  //     longitude: "-43,20438",
+  //     distanciaKm: "5.39",
+  //     velocidade: "50",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  //   {
+  //     ordem: "A48078",
+  //     linha: "539",
+  //     latitude: "-22,98453",
+  //     longitude: "-43,24523",
+  //     distanciaKm: "0.63",
+  //     velocidade: "12",
+  //     datahora: "1712370378000",
+  //     backgroundColor: "FCC417",
+  //     textColor: "000000",
+  //     trajeto: "Rocinha - Leme",
+  //   },
+  // ];
+
   useEffect(() => {
     getStreet(data.location).then((data) => {
       setStreet(data.results[0].formatted_address);
     });
   }, []);
-
   return (
     <>
       {modalVisible && (
@@ -34,11 +156,39 @@ const Page = ({ data }) => {
               style={{
                 flex: 1,
                 justifyContent: "center",
+                alignItems: "center",
                 backgroundColor: "rgba(52, 52, 52, 0.7)",
                 padding: 20,
               }}
             >
-              <Form setModalVisible={setModalVisible} />
+              <View
+                style={{
+                  backgroundColor: "#ffffffed",
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: 8,
+                  paddingHorizontal: 12,
+                  position: "absolute",
+                  top: 20,
+                  right: 20,
+                  width: "100%",
+                  // borderRadius: 12,
+                }}
+              >
+                <Text style={{ color: "#222", fontSize: 16 }}>
+                  Escolha uma Localização
+                </Text>
+                <Pressable onPress={() => setModalVisible(false)}>
+                  <AntDesign
+                    style={styles.closeBtn}
+                    name="closesquare"
+                    size={32}
+                    color="#ff1100dd"
+                  />
+                </Pressable>
+              </View>
+              <MapChoose />
             </View>
           </Modal>
         </View>
@@ -63,36 +213,35 @@ const Page = ({ data }) => {
           </Text>
         </View>
         <View style={styles.containerBtn}>
-          <ScrollView
-            horizontal
-            scrollEnabled
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              flexGrow: 1,
-              justifyContent: "center",
-              marginTop: 16,
-              alignItems: "center",
-              marginLeft: 8,
-            }}
-          >
-            {lines.map((line, i) => (
-              <TouchableOpacity
-                onPress={(e) => console.log(e.target)}
-                key={i}
-                style={styles.lineBtn}
-              >
-                <Text
-                  style={{
-                    color: "#eee",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                  }}
-                >
-                  {line}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+          {lines.length > 0 && (
+            <ScrollView
+              horizontal
+              scrollEnabled
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={{
+                flexGrow: 1,
+                justifyContent: "center",
+                marginTop: 16,
+                alignItems: "center",
+                marginLeft: 8,
+              }}
+            >
+              {lines.map((line, i) => (
+                <TouchableOpacity key={i} style={styles.lineBtn}>
+                  <Text
+                    style={{
+                      color: "#eee",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      fontSize: 12,
+                    }}
+                  >
+                    {line}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          )}
         </View>
         {/* LOCALIZAÇÃO STATUS */}
         <View style={styles.localContainer}>
@@ -140,7 +289,9 @@ const Page = ({ data }) => {
               <View
                 style={{ flexDirection: "row", gap: 8, alignItems: "center" }}
               >
-                <Text style={{ color: "#555" }}>8 veiculos por perto</Text>
+                <Text style={{ color: "#555" }}>
+                  {buses.length} Ônibus No Radar
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -169,9 +320,10 @@ const Page = ({ data }) => {
                 fontWeight: "bold",
               }}
             >
-              Ponto de Ônibus Próximo
+              Ônibus Mais Próximo
             </Text>
           </View>
+          <ScrollOnibus buses={buses} />
         </View>
       </View>
     </>
@@ -188,9 +340,8 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   lineBtn: {
-    // position: "relative",
-    width: 55,
-    height: 55,
+    width: 95,
+    height: 45,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#026088dd",
@@ -221,10 +372,15 @@ const styles = StyleSheet.create({
     },
   },
   localBusStop: {
-    flex: 2,
+    flex: 3,
     alignItems: "center",
+    gap: 15,
     padding: 20,
     marginHorizontal: 20,
+    marginVertical: 60,
+  },
+  closeBtn: {
+    alignSelf: "flex-end",
   },
 });
 
