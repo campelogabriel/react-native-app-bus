@@ -17,16 +17,22 @@ import BusScreen from "./src/screens/BusScreen";
 import SettingsScreen from "src/screens/SettingsScreen";
 import MapaStylesScreen from "src/screens/MapaStylesScreen";
 
+import getLocalStorage from "./src/utils/getDataLocalStorage";
+import { UserStorageType } from "src/types/UserStorageType";
+
 const Stack = createStackNavigator();
 
 export default function App() {
   const [isPermissionLocation, setIsPermissionLocation] = useState(false);
   const [location, setLocation] = useState<LocationObject>();
+  const [userLocalStorage, setUserLocalStorage] = useState<any>();
 
   async function requestLocationPermissions() {
     const positions = await getCurrentPositionAsync();
     setLocation(positions);
   }
+
+  console.log("app screen");
 
   const getPermissionLocation = async () => {
     const { granted } = await requestForegroundPermissionsAsync();
@@ -38,9 +44,12 @@ export default function App() {
 
   useEffect(() => {
     getPermissionLocation();
+    getLocalStorage().then((store) => {
+      setUserLocalStorage(store);
+    });
   }, []);
 
-  if (!isPermissionLocation || !location)
+  if (!isPermissionLocation || !location || !userLocalStorage)
     return (
       <View style={styles.splash}>
         <LottieView
@@ -64,10 +73,16 @@ export default function App() {
           >
             <Stack.Screen
               name="HomeInitial"
-              initialParams={{ location: location }}
+              initialParams={{
+                location: location,
+                localStorage: userLocalStorage,
+              }}
               component={TabNavigator}
             />
-            <Stack.Screen name="BusInitial" component={BusScreen} />
+            <Stack.Screen
+              name="BusInitial"
+              children={() => <BusScreen data={{ location: location }} />}
+            />
             <Stack.Screen name="MapaStyle" component={MapaStylesScreen} />
             <Stack.Screen
               name="Settings-outlineInitial"
