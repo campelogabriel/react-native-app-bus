@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialStates: string[] | null = ["539", "538", "309", "112"];
+const initialStates: string[] | null = [];
 
 const sliceLines = createSlice({
   name: "lines",
