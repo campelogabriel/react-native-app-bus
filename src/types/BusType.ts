@@ -9,4 +9,6 @@ export type Bus = {
   backgroundColor: string;
   textColor: string;
   trajeto: string;
+  count?: number;
+  root?: number;
 };
