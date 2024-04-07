@@ -5,8 +5,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
-import { useBuses } from "src/redux/sliceBuses/sliceBuses";
 
 function ScrollOnibus({ buses }) {
   if (buses.length == 0)
@@ -30,6 +28,7 @@ function ScrollOnibus({ buses }) {
       <ScrollView
         showsVerticalScrollIndicator
         scrollEnabled
+        indicatorStyle="black"
         contentContainerStyle={{
           gap: 30,
           paddingBottom: 20,
@@ -43,7 +42,6 @@ function ScrollOnibus({ buses }) {
             style={{
               ...styles.btn,
               backgroundColor: `#${bus.backgroundColor}98`,
-              borderColor: `#${bus.textColor}`,
             }}
             key={i}
           >
@@ -76,6 +74,7 @@ const styles = StyleSheet.create({
     gap: 24,
     borderRadius: 16,
     borderWidth: 2,
+    borderColor: "#000",
   },
 });
 
