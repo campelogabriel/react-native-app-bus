@@ -28,7 +28,7 @@ const Page = ({ data }) => {
 
   //PEGAR ONIBUS NO REDUX
   const buses = [...useSelector(useBuses)].sort(
-    (a, b) => b.distanciaKm - a.distanciaKm
+    (a, b) => a.distanciaKm - b.distanciaKm
   );
 
   // const buses = [
