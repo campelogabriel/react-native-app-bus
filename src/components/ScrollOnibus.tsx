@@ -5,8 +5,13 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { addMarker } from "src/redux/sliceMarker/sliceMarker";
+import { Bus } from "src/types/BusType";
 
-function ScrollOnibus({ buses }) {
+function ScrollOnibus({ buses, navigation }) {
+  const dispatch = useDispatch();
+
   if (buses.length == 0)
     return (
       <View style={styles.container}>
@@ -37,13 +42,17 @@ function ScrollOnibus({ buses }) {
           paddingHorizontal: 12,
         }}
       >
-        {buses.map((bus, i) => (
+        {buses.map((bus: Bus) => (
           <TouchableOpacity
+            onPress={() => {
+              dispatch(addMarker(bus.ordem));
+              navigation.navigate("Home");
+            }}
             style={{
               ...styles.btn,
               backgroundColor: `#${bus.backgroundColor}98`,
             }}
-            key={i}
+            key={bus.ordem}
           >
             <View style={{ alignItems: "center", alignSelf: "center" }}>
               <Text style={{ fontWeight: "bold" }}>{bus.linha}</Text>

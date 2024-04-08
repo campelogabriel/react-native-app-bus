@@ -18,11 +18,15 @@ import MapChoose from "../components/MapChoose";
 import ScrollOnibus from "src/components/ScrollOnibus";
 import { useBuses } from "src/redux/sliceBuses/sliceBuses";
 import { Bus } from "src/types/BusType";
+import { usePositions } from "src/redux/slicePositions/slicePositions";
+import { useNavigation } from "@react-navigation/native";
 
-const Page = ({ data }) => {
+const Page = () => {
   const [street, setStreet] = useState<string>("");
   const [modalVisible, setModalVisible] = useState(false);
   const lines = useSelector(useLines);
+  const location = useSelector(usePositions);
+  const navigation = useNavigation();
 
   console.log("BusScreen rendered");
 
@@ -143,7 +147,7 @@ const Page = ({ data }) => {
   // ];
 
   useEffect(() => {
-    getStreet(data.location).then((data) => {
+    getStreet(location).then((data) => {
       setStreet(data.results[0].formatted_address);
     });
   }, []);
@@ -323,7 +327,7 @@ const Page = ({ data }) => {
               Ônibus Mais Próximo
             </Text>
           </View>
-          <ScrollOnibus buses={buses} />
+          <ScrollOnibus navigation={navigation} buses={buses} />
         </View>
       </View>
     </>
