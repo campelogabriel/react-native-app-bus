@@ -2,7 +2,7 @@ export default stylesMaps = {
   padrao: [
     {
       featureType: "poi",
-      elementType: "labels.text",
+      elementType: "all",
       stylers: [
         {
           visibility: "off",
@@ -10,24 +10,17 @@ export default stylesMaps = {
       ],
     },
     {
-      featureType: "poi.business",
+      featureType: "poi.park",
+      elementType: "all",
       stylers: [
         {
-          visibility: "off",
+          visibility: "on",
         },
       ],
     },
     {
-      featureType: "road",
-      elementType: "labels.icon",
-      stylers: [
-        {
-          visibility: "off",
-        },
-      ],
-    },
-    {
-      featureType: "transit",
+      featureType: "transit.station",
+      elementType: "all",
       stylers: [
         {
           visibility: "off",
