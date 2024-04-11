@@ -53,12 +53,11 @@ const TabNavigator = ({ route }) => {
                 route.params.location.coords.latitude,
                 route.params.location.coords.longitude,
               ],
-              localStorage: route.params.localStorage,
             }}
           />
         )}
       />
-      <Tab.Screen name="Settings-outline" children={SettingsScreen} />
+      <Tab.Screen name="Settings-outline" component={SettingsScreen} />
     </Tab.Navigator>
   );
 };
