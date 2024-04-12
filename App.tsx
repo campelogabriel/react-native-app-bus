@@ -1,4 +1,10 @@
-import { StyleSheet, StatusBar, Text, View } from "react-native";
+import {
+  StyleSheet,
+  StatusBar,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TabNavigator from "./src/navigation/TabNavigator";
@@ -16,51 +22,50 @@ import { createStackNavigator } from "@react-navigation/stack";
 import BusScreen from "./src/screens/BusScreen";
 import SettingsScreen from "src/screens/SettingsScreen";
 import MapaStylesScreen from "src/screens/MapaStylesScreen";
-
-import getLocalStorage from "./src/utils/getDataLocalStorage";
-import { UserStorageType } from "src/types/UserStorageType";
+import NotAllowed from "src/components/NotAllowed";
+import NoLocal from "src/components/NoLocal";
+import LottieViewBus from "src/components/LottieViewBus";
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [isPermissionLocation, setIsPermissionLocation] = useState(false);
-  const [location, setLocation] = useState<LocationObject>();
-  const [userLocalStorage, setUserLocalStorage] = useState<any>();
+  const [isPermissionLocation, setIsPermissionLocation] = useState<
+    boolean | null
+  >(null);
+  const [location, setLocation] = useState<LocationObject | boolean | null>(
+    null
+  );
 
   async function requestLocationPermissions() {
-    const positions = await getCurrentPositionAsync();
-    setLocation(positions);
+    try {
+      const positions = await getCurrentPositionAsync();
+      setLocation(positions);
+    } catch (err) {
+      setLocation(false);
+    }
   }
-
-  console.log("app screen");
 
   const getPermissionLocation = async () => {
     const { granted } = await requestForegroundPermissionsAsync();
     if (granted) {
       setIsPermissionLocation(true);
       requestLocationPermissions();
+    } else {
+      setIsPermissionLocation(false);
     }
   };
 
   useEffect(() => {
     getPermissionLocation();
-    getLocalStorage().then((store) => {
-      setUserLocalStorage(store);
-    });
   }, []);
 
-  if (!isPermissionLocation || !location || !userLocalStorage)
-    return (
-      <View style={styles.splash}>
-        <LottieView
-          style={{ flex: 1 }}
-          source={require("./assets/buscarioca.json")}
-          resizeMode="cover"
-          autoPlay
-          loop
-        />
-      </View>
-    );
+  if (location == false)
+    return <NoLocal requestLocationPermissions={requestLocationPermissions} />;
+
+  if (isPermissionLocation == false)
+    return <NotAllowed getPermissionLocation={getPermissionLocation} />;
+
+  if (!isPermissionLocation || !location) return <LottieViewBus />;
   7;
 
   return (
@@ -75,7 +80,6 @@ export default function App() {
               name="HomeInitial"
               initialParams={{
                 location: location,
-                localStorage: userLocalStorage,
               }}
               component={TabNavigator}
             />
@@ -100,12 +104,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-  },
-  splash: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
   },
 });

@@ -26,17 +26,6 @@
     },
     "plugins": [
       [
-        "expo-font",
-        {
-          "fonts": [
-            "./assets/fonts/AldotheApache.ttf",
-            "./assets/fonts/Flipbash.otf",
-            "./assets/fonts/Flipbash Condensed Italic.otf",
-            "./assets/fonts/Flipbash Condensed.otf"
-          ]
-        }
-      ],
-      [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Permita que o aplicativo use sua localização."
