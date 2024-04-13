@@ -4,8 +4,6 @@ import HomeScreen from "../screens/HomeScreen";
 import BusScreen from "../screens/BusScreen";
 import CustomTabBar from "../components/CustomTabBar/CustomTabBar";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addPosition } from "src/redux/slicePositions/slicePositions";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,31 +29,28 @@ const TabNavigator = ({ route }) => {
     >
       <Tab.Screen
         name="Bus"
-        children={() => (
-          <BusScreen
-            data={{
-              location: [
-                route.params.location.coords.latitude,
-                route.params.location.coords.longitude,
-              ],
-            }}
-          />
-        )}
+        initialParams={{
+          data: {
+            location: [
+              route.params.location.coords.latitude,
+              route.params.location.coords.longitude,
+            ],
+          },
+        }}
+        component={BusScreen}
       />
       <Tab.Screen
         name="Home"
-        children={() => (
-          <HomeScreen
-            data={{
-              isFlex,
-              setIsFlex,
-              location: [
-                route.params.location.coords.latitude,
-                route.params.location.coords.longitude,
-              ],
-            }}
-          />
-        )}
+        initialParams={{
+          data: {
+            setIsFlex: setIsFlex,
+            location: [
+              route.params.location.coords.latitude,
+              route.params.location.coords.longitude,
+            ],
+          },
+        }}
+        component={HomeScreen}
       />
       <Tab.Screen name="Settings-outline" component={SettingsScreen} />
     </Tab.Navigator>

@@ -1,18 +1,11 @@
-import {
-  StyleSheet,
-  StatusBar,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, StatusBar } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import TabNavigator from "./src/navigation/TabNavigator";
 import { Provider } from "react-redux";
 import store from "src/redux/store";
 import { useEffect, useState } from "react";
-import { useFonts } from "expo-font";
-import LottieView from "lottie-react-native";
+
 import {
   LocationObject,
   getCurrentPositionAsync,
@@ -83,10 +76,7 @@ export default function App() {
               }}
               component={TabNavigator}
             />
-            <Stack.Screen
-              name="BusInitial"
-              children={() => <BusScreen data={{ location: location }} />}
-            />
+            <Stack.Screen name="BusInitial" component={BusScreen} />
             <Stack.Screen name="MapaStyle" component={MapaStylesScreen} />
             <Stack.Screen
               name="Settings-outlineInitial"
