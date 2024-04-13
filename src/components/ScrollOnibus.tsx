@@ -1,70 +1,55 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Image, StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { useBuses } from "src/redux/sliceBuses/sliceBuses";
 import { addMarker } from "src/redux/sliceMarker/sliceMarker";
-import { Bus } from "src/types/BusType";
+import RenderMarker from "./RenderMarker";
+import { useNavigation } from "@react-navigation/native";
 
-function ScrollOnibus({ buses, navigation }) {
+function ScrollOnibus() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
+  const buses = [...useSelector(useBuses)]
+    .filter((bus) => bus.count > 1)
+    .sort((a, b) => a.distanciaKm - b.distanciaKm);
+
+  console.log("ScrollOnibus rendering");
+
+  function onClickMarker(ordem: string) {
+    dispatch(addMarker(ordem));
+  }
 
   if (buses.length == 0)
     return (
-      <View style={styles.container}>
-        <Text
-          style={{
-            backgroundColor: "#fff",
-            padding: 32,
-            borderRadius: 12,
-            borderWidth: 1,
-          }}
-        >
-          Sem Ônibus no Radar
-        </Text>
-      </View>
+      <Image
+        style={{ width: 230, height: 240 }}
+        source={require("../../assets/nobus.png")}
+      />
     );
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator
-        scrollEnabled
-        indicatorStyle="black"
+      <FlatList
+        removeClippedSubviews={true}
         contentContainerStyle={{
+          width: "100%",
+          flexGrow: 1,
           gap: 30,
           paddingBottom: 20,
           alignItems: "flex-end",
           justifyContent: "center",
           paddingHorizontal: 12,
         }}
-      >
-        {buses.map((bus: Bus) => (
-          <TouchableOpacity
-            onPress={() => {
-              dispatch(addMarker(bus.ordem));
-              navigation.navigate("Home");
-            }}
-            style={{
-              ...styles.btn,
-              backgroundColor: `#${bus.backgroundColor}98`,
-            }}
-            key={bus.ordem}
-          >
-            <View style={{ alignItems: "center", alignSelf: "center" }}>
-              <Text style={{ fontWeight: "bold" }}>{bus.linha}</Text>
-              <Text style={{ fontWeight: "bold" }}>ORDEM: {bus.ordem}</Text>
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <Text>Distancia</Text>
-              <Text>{bus.distanciaKm} km</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+        renderItem={({ item }) => (
+          <RenderMarker
+            bus={item}
+            onClickMarker={onClickMarker}
+            navigation={navigation}
+          />
+        )}
+        data={buses}
+        keyExtractor={(bus) => bus.ordem}
+      />
     </View>
   );
 }
@@ -76,7 +61,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   btn: {
-    // padding: 12,
     paddingHorizontal: 32,
     paddingVertical: 12,
     flexDirection: "row",

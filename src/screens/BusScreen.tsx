@@ -8,17 +8,12 @@ import { useBuses } from "src/redux/sliceBuses/sliceBuses";
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions } from "react-native";
 
-const Page = ({ data }) => {
+const Page = ({ route }) => {
   const [street, setStreet] = useState<string>("");
-  const navigation = useNavigation();
-
-  const buses = [...useSelector(useBuses)].sort(
-    (a, b) => a.distanciaKm - b.distanciaKm
-  );
   console.log("BusScreen rendered");
 
   useEffect(() => {
-    getStreet(data.location).then((data) => {
+    getStreet(route.params.data.location).then((data) => {
       setStreet(data.results[0].formatted_address);
     });
   }, []);
@@ -26,7 +21,7 @@ const Page = ({ data }) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.localHeader}>Linhas de Onibus</Text>
+        <Text style={styles.localHeader}>Veículos</Text>
       </View>
       <View style={styles.localContainer}>
         <View style={styles.localTouchable}>
@@ -59,13 +54,7 @@ const Page = ({ data }) => {
               flexDirection: "row",
               justifyContent: "space-between",
             }}
-          >
-            <View style={{ flexDirection: "row", gap: 8 }}>
-              <Text style={{ color: "#026088dd", fontWeight: "500" }}>
-                {buses.length == 0 ? "Nenhum" : buses.length} ônibus no radar
-              </Text>
-            </View>
-          </View>
+          ></View>
         </View>
       </View>
       <View style={styles.localBusStop}>
@@ -85,14 +74,7 @@ const Page = ({ data }) => {
             Ônibus Mais Próximo
           </Text>
         </View>
-        {buses.length > 0 ? (
-          <ScrollOnibus navigation={navigation} buses={buses} />
-        ) : (
-          <Image
-            style={{ width: 230, height: 240 }}
-            source={require("../../assets/nobus.png")}
-          />
-        )}
+        <ScrollOnibus />
       </View>
     </View>
   );
