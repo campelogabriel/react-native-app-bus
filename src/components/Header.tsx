@@ -1,27 +1,28 @@
-import { useRef, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import { EvilIcons, MaterialIcons } from "@expo/vector-icons";
+import { useState } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import { EvilIcons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
 import { addLines } from "src/redux/sliceLines/sliceLines";
-import { useFonts } from "expo-font";
 import AnimatedBusUpdated from "./AnimatedBusUpdated";
+import NoConexion from "./NoConexion";
+import AnimatedBusUpdating from "./AnimatedBusUpdating";
+import { useIsFetching } from "@tanstack/react-query";
 
-function Header({ value }) {
+function Header({ value = 0, status }) {
   const [line, setLine] = useState<string>("");
-  const dispacth = useDispatch();
+  const isFetching = useIsFetching();
+  const dispatch = useDispatch();
 
   function handleSubmit() {
-    dispacth(addLines(line));
+    dispatch(addLines(line));
     setLine("");
   }
 
   return (
     <View style={styles.container}>
-      {/* <MaterialIcons name="123" size={34} color="#0e997d" /> */}
       <View style={styles.header}>
         <Text style={styles.ex}>123ABC</Text>
         <TextInput
-          // autoComplete=""
           autoCapitalize={"characters"}
           textAlign="center"
           placeholder="Digite a linha..."
@@ -41,7 +42,12 @@ function Header({ value }) {
           onPress={handleSubmit}
         />
       </View>
-      <AnimatedBusUpdated bus={value} />
+      {status == "paused" && <NoConexion />}
+      {isFetching ? (
+        <AnimatedBusUpdating />
+      ) : (
+        <AnimatedBusUpdated bus={value} />
+      )}
     </View>
   );
 }
@@ -53,6 +59,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 20,
     alignItems: "center",
+    gap: 8,
   },
   header: {
     width: "100%",
@@ -61,11 +68,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     paddingVertical: 10,
     alignItems: "center",
-
-    // alignSelf: "center",
     elevation: 55,
     gap: 30,
-
     borderWidth: 1,
     borderColor: "#eee",
     shadowColor: "#000",
