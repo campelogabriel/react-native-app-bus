@@ -19,7 +19,7 @@ function activeColor(nameIcon: string): string {
   }
 }
 
-const Page = ({ state, descriptors, navigation }: any) => {
+const CustomTabBar = ({ state, descriptors, navigation }: any) => {
   const displayTabInHome =
     descriptors[Object.keys(descriptors)[1]].options.tabBarStyle.display;
   return (
@@ -112,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Page;
+export default CustomTabBar;

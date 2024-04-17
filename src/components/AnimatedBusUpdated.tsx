@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { Animated, Text } from "react-native";
 
-function Page({ bus }) {
+function AnimatedBusUpdated() {
   const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function Page({ bus }) {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [bus]);
+  }, []);
 
   return (
     <Animated.View
@@ -47,10 +47,10 @@ function Page({ bus }) {
           gap: 8,
         }}
       >
-        Ônibus Atualizados: {bus}
+        Atualizado
       </Text>
     </Animated.View>
   );
 }
 
-export default Page;
+export default AnimatedBusUpdated;
