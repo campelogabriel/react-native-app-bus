@@ -1,10 +1,10 @@
 export default function (distance) {
-  if (String(distance).startsWith("0")) {
-    distance = `${String(distance).split(".").at(-1)} metros`;
-  } else if (String(distance).startsWith("1.")) {
-    distance = `${Math.round(distance)} Km`;
+  let distanciaFinal;
+
+  if (distance > 1000) {
+    distanciaFinal = `${Math.trunc(distance / 1000)} km`;
   } else {
-    distance = `${Math.round(distance)} Km`;
+    distanciaFinal = `${Math.trunc(distance)} metros`;
   }
-  return distance;
+  return distanciaFinal;
 }
