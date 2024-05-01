@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, StatusBar } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import {
@@ -8,22 +7,15 @@ import {
   getCurrentPositionAsync,
   requestForegroundPermissionsAsync,
 } from "expo-location";
-import { createStackNavigator } from "@react-navigation/stack";
-
 import store from "src/redux/store";
-
-import TabNavigator from "./src/navigation/TabNavigator";
-import BusScreen from "./src/screens/BusScreen";
-import SettingsScreen from "src/screens/SettingsScreen";
-import MapaStylesScreen from "src/screens/MapaStylesScreen";
-import NotAllowed from "src/components/NotAllowed";
-import NoLocal from "src/components/NoLocal";
+import NotAllowed from "src/components/Permition/NotAllowed";
+import NoLocal from "src/components/Permition/NoLocal";
 import LottieViewBus from "src/components/LottieViewBus";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { LogBox } from "react-native";
+import Application from "src/Application";
 LogBox.ignoreAllLogs();
 
-const Stack = createStackNavigator();
 const queryClient = new QueryClient({});
 
 export default function App() {
@@ -64,36 +56,18 @@ export default function App() {
     return <NotAllowed getPermissionLocation={getPermissionLocation} />;
 
   if (!isPermissionLocation || !location) return <LottieViewBus />;
-  7;
 
   return (
-    <NavigationContainer>
+    <>
       <QueryClientProvider client={queryClient}>
         <SafeAreaView style={styles.container}>
           <Provider store={store}>
-            <Stack.Navigator
-              screenOptions={{ headerShown: false }}
-              initialRouteName="HomeInitial"
-            >
-              <Stack.Screen
-                name="HomeInitial"
-                initialParams={{
-                  location: location,
-                }}
-                component={TabNavigator}
-              />
-              <Stack.Screen name="BusInitial" component={BusScreen} />
-              <Stack.Screen name="MapaStyle" component={MapaStylesScreen} />
-              <Stack.Screen
-                name="Settings-outlineInitial"
-                component={SettingsScreen}
-              />
-            </Stack.Navigator>
+            <Application location={location} />
           </Provider>
         </SafeAreaView>
       </QueryClientProvider>
       <StatusBar barStyle={"light-content"} />
-    </NavigationContainer>
+    </>
   );
 }
 
