@@ -1,4 +1,5 @@
 import {
+  Image,
   StyleSheet,
   Text,
   Touchable,
@@ -16,7 +17,7 @@ import {
 } from "src/redux/sliceSettings/sliceSettings";
 import { useSelector } from "react-redux";
 
-function Page({ navigation }) {
+function MapaStylesScreen({ navigation }) {
   const [choosed, setChoosed] = useState("");
   const dispatch = useDispatch();
   const settings = useSelector(useSettings);
@@ -32,7 +33,7 @@ function Page({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <Text style={styles.header}>Aparencia do Mapa</Text>
+        <Text style={styles.header}>Estilo do Mapa</Text>
       </View>
       <View style={styles.mapChoose}>
         <TouchableOpacity
@@ -101,36 +102,43 @@ function Page({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.blockButton}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#fff",
+            padding: 9,
+            borderRadius: 4,
+            borderWidth: 1,
+          }}
+          onPress={() => navigation.goBack()}
+        >
           <Text
             style={{
-              backgroundColor: "#fff",
               color: "#000",
               fontSize: 14,
-              padding: 9,
               textAlign: "center",
-              borderRadius: 8,
               textTransform: "uppercase",
-              borderWidth: 1,
-              borderColor: "#ddd",
             }}
           >
             Retornar
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: "#000",
+            padding: 9,
+            borderRadius: 4,
+            borderWidth: 1,
+            borderColor: "#ddd",
+          }}
+          onPress={() => navigation.navigate("HomeInitial")}
+        >
           <Text
             style={{
-              backgroundColor: "#ff6a00ba",
               color: "#fff",
               fontSize: 14,
-              padding: 9,
               textAlign: "center",
-              borderRadius: 8,
               textTransform: "uppercase",
               fontWeight: "bold",
-              borderWidth: 1,
-              borderColor: "#ddd",
             }}
           >
             Concluir
@@ -147,25 +155,34 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     justifyContent: "center",
     gap: 20,
+    backgroundColor: "#fff",
   },
   header: {
     fontSize: 26,
-    color: "#ff6a00ba",
+    color: "#026088dd",
     fontWeight: "bold",
+    textShadowColor: "#000",
+    textShadowRadius: 2,
+    textShadowOffset: {
+      width: 1,
+      height: 1,
+    },
     justifyContent: "center",
+    paddingBottom: 8,
   },
-  mapChoose: { gap: 40, flex: 4, justifyContent: "flex-start" },
+  mapChoose: { gap: 40, flex: 4, justifyContent: "center" },
 
   mapBtn: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     gap: 16,
-    padding: 24,
+    padding: 16,
     backgroundColor: "#fff",
-    borderRadius: 12,
-    color: "#fff",
+    borderWidth: 1,
+    borderColor: "#aaa",
     elevation: 2,
+    borderRadius: 3,
   },
 
   blockButton: {
@@ -178,7 +195,7 @@ const styles = StyleSheet.create({
   outter: {
     width: 25,
     height: 25,
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 15,
     backgroundColor: "#fff",
     justifyContent: "center",
@@ -187,11 +204,11 @@ const styles = StyleSheet.create({
   inner: {
     width: 11,
     height: 11,
-    backgroundColor: "#ff6a00ba",
+    backgroundColor: "#026088dd",
     borderRadius: 11,
     justifyContent: "center",
     alignItems: "center",
   },
 });
 
-export default Page;
+export default MapaStylesScreen;
