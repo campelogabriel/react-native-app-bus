@@ -32,7 +32,7 @@ function Application({ location }) {
         <Stack.Screen
           name="Position"
           options={{
-            title: "Mude a Localização",
+            title: "Coordenadas",
             headerShown: true,
             headerTintColor: "#fff",
             headerTitleAlign: "center",
