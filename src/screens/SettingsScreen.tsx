@@ -1,78 +1,80 @@
-import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Dimensions } from "react-native";
 import {
   SimpleLineIcons,
-  MaterialIcons,
+  FontAwesome5,
   Feather,
-  FontAwesome,
+  Ionicons,
+  Entypo,
+  AntDesign,
 } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { setNotificationBusNext } from "src/redux/sliceSettings/sliceSettings";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setAutomatedFetch,
+  useSettings,
+} from "../../src/redux/sliceSettings/sliceSettings";
+import CustomTabBar from "../../src/components/CustomTabBar/CustomTabBar";
+import { useRoute } from "@react-navigation/native";
+import { useLines } from "../../src/redux/sliceLines/sliceLines";
 
-import Modal from "../components/Modal";
-import RemoveBus from "../components/RemoveBus";
-
-const Page = ({ navigation }) => {
-  const [isNotification, setIsNotification] = useState(true);
-  const [modal, setModal] = useState(false);
+const SettingsScreen = ({ navigation }) => {
   const dispatch = useDispatch();
+  const settigns = useSelector(useSettings);
+  const lines = useSelector(useLines);
+  const [modal, setModal] = useState(false);
+  const [enabledAuto, setEnableAuto] = useState<boolean>(
+    settigns.isEnabledAutomate
+  );
 
-  function setNotification() {
-    setIsNotification((not) => !not);
+  const route = useRoute();
+
+  console.log("Settings Screen");
+
+  function handleAutomatedFetch() {
+    setEnableAuto((v) => {
+      return !v;
+    });
+    dispatch(setAutomatedFetch(!enabledAuto));
   }
-
-  useEffect(() => {
-    dispatch(setNotificationBusNext(isNotification));
-  }, [isNotification]);
 
   return (
     <>
-      {modal && (
-        <View>
-          <Modal modalVisible={modal}>
-            <RemoveBus setModalVisible={setModal} />
-          </Modal>
-        </View>
-      )}
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
-          <View
-            style={{
-              backgroundColor: "#ff6a00ba",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: 20,
-            }}
-          >
-            <Text style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>
-              Configurações
-            </Text>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Configurações</Text>
           </View>
         </View>
         <View style={styles.blockSettings}>
-          <TouchableOpacity style={styles.blockBtn}>
+          <TouchableOpacity
+            onPress={handleAutomatedFetch}
+            style={styles.blockBtn}
+          >
             <View
               style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
             >
-              <MaterialIcons
+              <FontAwesome5
+                name="broadcast-tower"
                 style={{
+                  ...styles.icon,
                   backgroundColor: "#859bf8b8",
-                  padding: 6,
-                  borderRadius: 12,
                 }}
-                name="notifications"
-                size={24}
+                size={20}
                 color="#2f0394b3"
               />
-              <Text>Notificação</Text>
+              <Text>Busca Automática</Text>
             </View>
-            <View>
-              <Switch
-                value={isNotification}
-                onValueChange={setIsNotification}
-              />
-            </View>
+            <TouchableOpacity
+              onPress={handleAutomatedFetch}
+              style={{
+                ...styles.outter,
+                backgroundColor: enabledAuto ? "#859bf8b8" : "#aaa",
+                justifyContent: enabledAuto ? "flex-end" : "flex-start",
+              }}
+            >
+              <View style={styles.inner}></View>
+            </TouchableOpacity>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => navigation.navigate("MapaStyle")}
@@ -81,46 +83,40 @@ const Page = ({ navigation }) => {
             <View
               style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
             >
-              <MaterialIcons
-                style={{
-                  backgroundColor: "#fdbef8",
-                  padding: 6,
-                  borderRadius: 12,
-                }}
+              <Entypo
+                style={{ ...styles.icon, backgroundColor: "#46c7ffdd" }}
                 name="map"
                 size={24}
-                color="#ff00ea"
+                color="#026088dd"
               />
-              <Text>Mapa Estilo</Text>
+
+              <Text>Estilo do Mapa</Text>
             </View>
             <View>
               <Text>
-                <SimpleLineIcons name="arrow-right" size={14} color="#777" />
+                <SimpleLineIcons name="arrow-right" size={14} color="#444" />
               </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setModal(true)}
+            onPress={() => navigation.navigate("Lines")}
             style={styles.blockBtn}
           >
             <View
               style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
             >
-              <FontAwesome
-                style={{
-                  backgroundColor: "#52f8d7",
-                  padding: 6,
-                  borderRadius: 12,
-                }}
-                name="bus"
-                size={24}
-                color="#0e997d"
+              <FontAwesome5
+                style={{ ...styles.icon, backgroundColor: "#facc33dd" }}
+                name="bus-alt"
+                size={22}
+                color="#111"
               />
-              <Text>Remover Ônibus</Text>
+
+              <Text>Resetar Linhas</Text>
             </View>
             <View>
               <Text>
-                <SimpleLineIcons name="arrow-right" size={14} color="#777" />
+                <SimpleLineIcons name="arrow-right" size={14} color="#444" />
               </Text>
             </View>
           </TouchableOpacity>
@@ -130,25 +126,49 @@ const Page = ({ navigation }) => {
             >
               <Feather
                 style={{
-                  backgroundColor: "#eee",
-                  padding: 6,
-                  borderRadius: 12,
+                  ...styles.icon,
+                  backgroundColor: "#e9e7e7",
                 }}
-                name="help-circle"
-                size={24}
+                name="book-open"
+                size={22}
                 color="black"
               />
-
-              <Text>Ajuda</Text>
+              <Text>Manual</Text>
             </View>
             <View>
               <Text>
-                <SimpleLineIcons name="arrow-right" size={14} color="#777" />
+                <SimpleLineIcons name="arrow-right" size={14} color="#444" />
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.blockBtn}>
+            <View
+              style={{ flexDirection: "row", gap: 10, alignItems: "center" }}
+            >
+              <AntDesign
+                style={{
+                  padding: 6,
+                  borderRadius: 8,
+                  backgroundColor: "#222",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                name="infocirlceo"
+                size={22}
+                color="white"
+              />
+
+              <Text>Sobre</Text>
+            </View>
+            <View>
+              <Text>
+                <SimpleLineIcons name="arrow-right" size={14} color="#444" />
               </Text>
             </View>
           </TouchableOpacity>
         </View>
       </View>
+      <CustomTabBar routeName={route.name} />
     </>
   );
 };
@@ -157,10 +177,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: "#fefefe",
   },
-  headerText: {
-    fontSize: 30,
+  header: {
+    backgroundColor: "#ff6a00ba",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
   },
+  headerText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
   blockSettings: {
     padding: 14,
     marginHorizontal: 20,
@@ -171,14 +196,44 @@ const styles = StyleSheet.create({
   blockBtn: {
     flexDirection: "row",
     backgroundColor: "#fff",
-    elevation: 3,
+    elevation: 2,
     alignItems: "center",
     justifyContent: "space-between",
     gap: 10,
-    borderBottomWidth: 1,
-    borderColor: "#eee",
     padding: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  icon: {
+    padding: 6,
+    borderRadius: 6,
+    backgroundColor: "#59ffa4",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inner: {
+    width: 20,
+    height: 20,
+    backgroundColor: "#f3f3f3",
+    borderRadius: 15,
+    borderWidth: 0.3,
+    elevation: 8,
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 2,
+  },
+  outter: {
+    width: 40,
+    height: 20,
+    borderRadius: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 0.2,
   },
 });
 
-export default Page;
+export default SettingsScreen;

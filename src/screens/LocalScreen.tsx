@@ -9,12 +9,12 @@ import {
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { useSelector } from "react-redux";
 import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
-import CustomTabBar from "src/components/CustomTabBar/CustomTabBar";
-import mapStyle from "src/utils/mapStyle";
+import CustomTabBar from "../components/CustomTabBar/CustomTabBar";
+import mapStyle from "../utils/mapStyle";
 import {
   addPosition,
   usePositions,
-} from "src/redux/slicePositions/slicePositions";
+} from "../redux/slicePositions/slicePositions";
 import { useEffect, useRef } from "react";
 import { getCurrentPositionAsync } from "expo-location";
 import { useDispatch } from "react-redux";

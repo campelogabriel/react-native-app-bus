@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Animated } from "react-native";
+import { Animated, StyleSheet } from "react-native";
 function Radar() {
   const rotate = useRef(new Animated.Value(0)).current;
 
@@ -16,12 +16,7 @@ function Radar() {
   return (
     <Animated.Image
       style={{
-        position: "absolute",
-        zIndex: 10,
-        marginVertical: "40%",
-        marginHorizontal: "20%",
-        // width: 290,
-        // height: 200,
+        ...styles.img,
         transform: [
           {
             rotateZ: rotate.interpolate({
@@ -37,3 +32,10 @@ function Radar() {
 }
 
 export default Radar;
+
+const styles = StyleSheet.create({
+  img: {
+    position: "absolute",
+    zIndex: 10,
+  },
+});

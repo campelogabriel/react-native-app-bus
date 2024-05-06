@@ -1,82 +1,73 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Platform,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
-import { Ionicons } from "@expo/vector-icons";
+const CustomTabBar = ({ routeName, isNight = false }) => {
+  const navigation = useNavigation();
 
-function activeColor(nameIcon: string): string {
-  if (nameIcon.toLowerCase() === "bus") {
-    return "#026088dd";
-  } else if (nameIcon.toLowerCase() === "home") {
-    return "#0e997d";
-  } else {
-    return "#FF6B00";
-  }
-}
-
-const CustomTabBar = ({ state, descriptors, navigation }: any) => {
-  const displayTabInHome =
-    descriptors[Object.keys(descriptors)[1]].options.tabBarStyle.display;
   return (
-    <View style={{ ...styles.container, display: displayTabInHome }}>
-      <View style={styles.content}>
-        {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
-          const isFocused = state.index === index;
-
-          const onPress = () => {
-            const event = navigation.emit({
-              type: "tabPress",
-              target: route.key,
-              canPreventDefault: true,
-            });
-
-            if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate(route.name, route.params);
-            }
-          };
-
-          const onLongPress = () => {
-            navigation.emit({
-              type: "tabLongPress",
-              target: route.key,
-            });
-          };
-
-          return (
-            <TouchableOpacity
-              accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
-              accessibilityLabel={options.tabBarAccessibilityLabel}
-              testID={options.tabBarTestID}
-              onPress={onPress}
-              onLongPress={onLongPress}
-              style={{ flex: 1, alignItems: "center" }}
-              key={index}
-            >
-              <View>
-                <View>
-                  <Ionicons
-                    name={route.name.toLowerCase()}
-                    size={25}
-                    color={isFocused ? activeColor(route.name) : "#535353"}
-                    style={{
-                      backgroundColor: isFocused ? "#f0efef" : "#fff",
-                      padding: 4,
-                      borderRadius: 12,
-                      justifyContent: "center",
-                    }}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+    <View style={{ ...styles.container }}>
+      <View
+        style={{
+          ...styles.content,
+          backgroundColor: isNight ? "#111111e4" : "#fff",
+          borderColor: isNight ? "#444" : "#ccc",
+        }}
+      >
+        <TouchableOpacity
+          //@ts-ignore
+          onPress={() => navigation.navigate("LocalInitial")}
+          style={{ flex: 1, alignItems: "center" }}
+        >
+          <MaterialCommunityIcons
+            name="map-marker-outline"
+            size={26}
+            color={routeName == "LocalInitial" ? "#026088dd" : "#535353"}
+            style={{
+              ...(!isNight && {
+                backgroundColor:
+                  routeName == "LocalInitial" ? "#f0efef" : "#fff",
+              }),
+              ...styles.iconLight,
+            }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          //@ts-ignore
+          onPress={() => navigation.navigate("HomeInitial")}
+          style={{ flex: 1, alignItems: "center" }}
+        >
+          <Ionicons
+            name={"home"}
+            size={25}
+            color={routeName == "HomeInitial" ? "#0e997d" : "#535353"}
+            style={{
+              ...(!isNight && {
+                backgroundColor:
+                  routeName == "HomeInitial" ? "#f0efef" : "#fff",
+              }),
+              ...styles.iconLight,
+            }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          //@ts-ignore
+          onPress={() => navigation.navigate("SettingsInitial")}
+          style={{ flex: 1, alignItems: "center" }}
+        >
+          <Ionicons
+            name={"settings-outline"}
+            size={25}
+            color={routeName == "SettingsInitial" ? "#FF6B00" : "#535353"}
+            style={{
+              ...(!isNight && {
+                backgroundColor:
+                  routeName == "SettingsInitial" ? "#f0efef" : "#fff",
+              }),
+              ...styles.iconLight,
+            }}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -90,25 +81,42 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: "row",
     marginBottom: Dimensions.get("window").height * 0.05,
-    // marginBottom: Platform.OS === "ios" ? 38 : 24,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
     bottom: 0,
-    backgroundColor: "#ffffff",
     borderColor: "#ccc",
     borderWidth: 1,
     paddingVertical: 8,
     paddingHorizontal: 10,
-    borderRadius: 20,
+    borderRadius: 10,
     margin: 100,
     gap: 34,
-    elevation: 4,
-    shadowColor: "#777",
+    elevation: 2,
+    shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 1,
+      height: 2,
     },
+  },
+  iconLight: {
+    padding: 4,
+    borderRadius: 12,
+    justifyContent: "center",
+  },
+  iconNight: {
+    backgroundColor: "#111111e4",
+    borderColor: "#444",
+    padding: 4,
+    borderRadius: 12,
+    justifyContent: "center",
+  },
+  iconNightHome: {
+    borderColor: "#444",
+    padding: 4,
+    borderRadius: 12,
+    justifyContent: "center",
+    backgroundColor: "#026088dd",
   },
 });
 

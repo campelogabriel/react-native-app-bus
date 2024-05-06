@@ -1,12 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  Touchable,
-  TouchableHighlight,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useEffect, useLayoutEffect, useState } from "react";
@@ -14,7 +6,7 @@ import { useDispatch } from "react-redux";
 import {
   setMapStyles,
   useSettings,
-} from "src/redux/sliceSettings/sliceSettings";
+} from "../redux/sliceSettings/sliceSettings";
 import { useSelector } from "react-redux";
 
 function MapaStylesScreen({ navigation }) {

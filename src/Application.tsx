@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addPosition } from "./redux/slicePositions/slicePositions";
 import HomeScreen from "./screens/HomeScreen";
+import LineScreen from "./screens/LineScreen";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,7 @@ function Application({ location }) {
           component={PositionScreen}
         />
         <Stack.Screen name="SettingsInitial" component={SettingsScreen} />
+        <Stack.Screen name="Lines" component={LineScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

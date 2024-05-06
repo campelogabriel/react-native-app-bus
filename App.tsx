@@ -7,13 +7,14 @@ import {
   getCurrentPositionAsync,
   requestForegroundPermissionsAsync,
 } from "expo-location";
-import store from "src/redux/store";
-import NotAllowed from "src/components/Permition/NotAllowed";
-import NoLocal from "src/components/Permition/NoLocal";
-import LottieViewBus from "src/components/LottieViewBus";
+
+import store from "./src/redux/store";
+import NotAllowed from "./src/components/Permition/NotAllowed";
+import NoLocal from "./src/components/Permition/NoLocal";
+import LottieViewBus from "./src/components/LottieViewBus";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { LogBox } from "react-native";
-import Application from "src/Application";
+import Application from "./src/Application";
 LogBox.ignoreAllLogs();
 
 const queryClient = new QueryClient({});
@@ -66,7 +67,7 @@ export default function App() {
           </Provider>
         </SafeAreaView>
       </QueryClientProvider>
-      <StatusBar barStyle={"light-content"} />
+      <StatusBar barStyle={"default"} />
     </>
   );
 }

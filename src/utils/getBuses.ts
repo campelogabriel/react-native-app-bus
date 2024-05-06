@@ -1,6 +1,5 @@
 const getBuses = async (busesLines: string[], location) => {
   try {
-    console.log("fetching");
     const res = await fetch(
       `${process.env.EXPO_PUBLIC_API_BUS_LINES_URL}?line=${busesLines
         .join(",")

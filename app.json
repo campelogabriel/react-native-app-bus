@@ -4,25 +4,38 @@
     "slug": "app-bus",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Logo.png",
+    "icon": "assets/favicon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "cover",
       "backgroundColor": "#2FAC66"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.gabrielcampelo.appbus"
     },
     "android": {
+      "icon": "assets/favicon.png",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "",
         "backgroundColor": "#ffffff"
       },
-      "config": {}
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDBL82YIr-EE0FMMDgiRrU47bZLggtWUWk"
+        }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.gabrielcampelo.appbus"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "assets/favicon.png"
     },
     "plugins": [
       [
@@ -31,6 +44,11 @@
           "locationAlwaysAndWhenInUsePermission": "Permita que o aplicativo use sua localização."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "1255e590-3d97-43d9-bd6b-168b5fc4cea4"
+      }
+    }
   }
 }

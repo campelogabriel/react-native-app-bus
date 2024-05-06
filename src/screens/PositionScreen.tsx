@@ -10,12 +10,11 @@ import { useSelector } from "react-redux";
 import {
   addPosition,
   usePositions,
-} from "src/redux/slicePositions/slicePositions";
+} from "../redux/slicePositions/slicePositions";
 import { StyleSheet } from "react-native";
-import mapStyle from "src/utils/mapStyle";
+import mapStyle from "../../src/utils/mapStyle";
 import {
   FontAwesome,
-  Entypo,
   MaterialIcons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";

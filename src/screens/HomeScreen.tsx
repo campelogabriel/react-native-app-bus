@@ -1,55 +1,78 @@
-import { View, StyleSheet, Text } from "react-native";
-import Header from "src/components/Header";
-import MapCustom from "../components/MapCustom";
+import { View, StyleSheet } from "react-native";
+import Header from "../components/Header/Header";
+import MapCustom from "../components/MapCustom/MapCustom";
 import { useSelector } from "react-redux";
-import { useLines } from "src/redux/sliceLines/sliceLines";
+import { useLines } from "../redux/sliceLines/sliceLines";
 import { useEffect, useState } from "react";
+import { addBus } from "../redux/sliceBuses/sliceBuses";
+import { Bus } from "../types/BusType";
+import { useSettings } from "../redux/sliceSettings/sliceSettings";
+import { useQueryBuses } from "../hooks/useQueryBuses";
 import { useDispatch } from "react-redux";
-import { addBus } from "src/redux/sliceBuses/sliceBuses";
-import { Bus } from "src/types/BusType";
-import { useQuery } from "@tanstack/react-query";
-import getBuses from "src/utils/getBuses";
+import Radar from "../components/Radar";
+import HeaderManual from "../components/Header/HeaderManual";
+import { usePositions } from "../redux/slicePositions/slicePositions";
+import LottieViewBus from "../components/LottieViewBus";
 
-// const buss = [
-// {
-//   backgroundColor: "FCC417",
-//   count: 1,
-//   datahora: "1712766137000",
-//   distanciaKm: "NaN",
-//   latitude: "-22,9893",
-//   linha: "539",
-//   longitude: "-43,25148",
-//   ordem: "A48026",
-//   textColor: "000000",
-//   trajeto: "Rocinha - Leme",
-//   velocidade: "0",
-// },
-// ];
-
-const Page = ({ route }) => {
-  const busLines = useSelector(useLines);
+const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  const { data, fetchStatus, isPaused } = useQuery({
-    refetchInterval: 1000 * 20,
-    queryKey: ["buses"],
-    queryFn: () => getBuses(busLines, route.params.data.location),
-    enabled: busLines.length > 0,
-    networkMode: "online",
-    refetchOnReconnect: true,
-  });
+  const busLines = useSelector(useLines);
+  const settings = useSelector(useSettings);
+  const positions = useSelector(usePositions);
 
-  if (data && !isPaused) {
-    data?.data?.buses?.map((bus: Bus) => dispatch(addBus(bus)));
-  }
+  const [countFetch, setCountFetch] = useState(5);
+  const [busesOnMap, setBusesOnMap] = useState();
+  const [enabledBattery, setEnabledBattery] = useState(true);
+
+  const { data, isPaused, isFetching } = useQueryBuses(
+    busLines,
+    settings.isEnabledAutomate,
+    setCountFetch,
+    positions,
+    enabledBattery
+  );
+
+  console.log("HomeScreen rendered");
+  useEffect(() => {
+    if (data && !isPaused) {
+      data?.data?.buses?.map((bus: Bus) => {
+        dispatch(addBus(bus));
+      });
+    }
+
+    if (countFetch == 0) {
+      setEnabledBattery(false);
+    }
+  }, [data]);
+
+  if (positions.length == 0) return <LottieViewBus />;
 
   return (
     <View style={styles.container}>
-      <Header status={fetchStatus} value={data?.data?.buses.length} />
-      <MapCustom
-        location={route.params.data.location}
-        setTabStyle={route.params.data.setIsFlex}
-      />
+      {settings.isEnabledAutomate ? (
+        <Header
+          busLines={busLines}
+          count={countFetch}
+          isFetching={isFetching}
+          busesOnMap={busesOnMap}
+          enabledBattery={enabledBattery}
+        />
+      ) : (
+        <HeaderManual
+          count={countFetch}
+          location={positions}
+          busLines={busLines}
+          busesOnMap={busesOnMap}
+          enabledBattery={enabledBattery}
+          setEnabledBattery={setEnabledBattery}
+          setCountFetch={setCountFetch}
+        />
+      )}
+      {countFetch == 4 && busLines.length > 0 && settings.isEnabledAutomate && (
+        <Radar />
+      )}
+      <MapCustom setBusesOnMap={setBusesOnMap} location={positions} />
     </View>
   );
 };
@@ -62,4 +85,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Page;
+export default HomeScreen;

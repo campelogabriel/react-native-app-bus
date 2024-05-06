@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import getBuses from "src/utils/getBuses";
+import getBuses from "../utils/getBuses";
 
 export const useQueryBuses = (
   busLines,

@@ -1,4 +1,4 @@
-import { Position } from "src/types/PositionType";
+import { Position } from "../types/PositionType";
 
 export const getRotation = (posAtual: Position, posFim: Position) => {
   if (!posAtual || !posFim) return 0;

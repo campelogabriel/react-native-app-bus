@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Bus } from "src/types/BusType";
-import { getDifference } from "src/utils/getDifference";
-import { getRotation } from "src/utils/getRotationBus";
+import { Bus } from "../../types/BusType";
+import { getDifference } from "../../utils/getDifference";
+import { getRotation } from "../../utils/getRotationBus";
 
 const initialStates: Bus[] | any | null = [];
 
@@ -41,9 +41,10 @@ const sliceBuses = createSlice({
           backgroundColor: busOld.backgroundColor,
           textColor: busOld.textColor,
           trajeto: busOld.trajeto,
+          consorcio: busOld.consorcio,
           latitude: isLowerThan5Meters ? busOld.latitude : payload.latitude,
           longitude: isLowerThan5Meters ? busOld.longitude : payload.longitude,
-          distanciaKm: payload.distanciaKm,
+          distancia: payload.distancia,
           velocidade: payload.velocidade,
           datahora: payload.datahora,
           root: isLowerThan5Meters
@@ -71,6 +72,9 @@ const sliceBuses = createSlice({
     removeBus(state, { payload }: PayloadAction<Bus>) {
       const filtered = state.filter((bus) => bus.ordem !== payload.ordem);
       return [...filtered];
+    },
+    reset(state) {
+      return [];
     },
   },
 });

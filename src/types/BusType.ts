@@ -3,12 +3,13 @@ export type Bus = {
   linha: string;
   latitude: string;
   longitude: string;
-  distanciaKm: string;
+  distancia: number;
   velocidade: string;
   datahora: string;
   backgroundColor: string;
   textColor: string;
   trajeto: string;
+  consorcio: string;
   count?: number;
   root?: number;
 };
